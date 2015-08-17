@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black_semi_transparent">#B2000000</color>
+    <color name="background">#e5e5e5</color>
+    <color name="half_black">#808080</color>
+    <color name="white">#fafafa</color>
+    <color name="white_pressed">#f1f1f1</color>
+    <color name="pink">#e91e63</color>
+    <color name="pink_pressed">#ec407a</color>
+    <color name="blue_semi_transparent">#805677fc</color>
+    <color name="blue_semi_transparent_pressed">#80738ffe</color>
+
+    <color name="primary">#3F51B5</color>
+    <color name="primary_dark">#303F9F</color>
+    <color name="primary_light">#C5CAE9</color>
+    <color name="accent">#FFC107</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#727272</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#B6B6B6</color>
+
+
+    // nliveo's colours from github page
+
+    <color name="transparent">#00000000</color>
+
+    <color name="blue_colorPrimary">#2196F3</color>
+    <color name="blue_colorPrimaryDark">#1976D2</color>
+    <color name="blue_alpha_colorPrimaryDark">#801976D2</color>
+
+    <color name="green_colorPrimary">#4CAF50</color>
+    <color name="green_colorPrimaryDark">#388E3C</color>
+    <color name="green_alpha_colorPrimaryDark">#80388E3C</color>
+
+    <color name="red_colorPrimary">#F44336</color>
+    <color name="red_colorPrimaryDark">#D32F2F</color>
+    <color name="red_alpha_colorPrimaryDark">#80D32F2F</color>
+
+    <color name="indigo_colorPrimary">#3F51B5</color>
+    <color name="indigo_colorPrimaryDark">#30379F</color>
+    <color name="indigo_alpha_colorPrimaryDark">#8030379F</color>
+
+    <color name="orange_colorPrimary">#FF9800</color>
+    <color name="orange_colorPrimaryDark">#F57C00</color>
+    <color name="orange_alpha_colorPrimaryDark">#80F57C00</color>
+
+    <color name="lime_colorPrimary">#CDDC39</color>
+    <color name="lime_colorPrimaryDark">#AFB42B</color>
+    <color name="lime_alpha_colorPrimaryDark">#80AFB42B</color>
+
+    <color name="cyan_colorPrimary">#00BCD4</color>
+    <color name="cyan_colorPrimaryDark">#0097A7</color>
+    <color name="cyan_alpha_colorPrimaryDark">#800097A7</color>
+
+    <color name="brown_colorPrimary">#795548</color>
+    <color name="brown_colorPrimaryDark">#5D4037</color>
+    <color name="brown_alpha_colorPrimaryDark">#805D4037</color>
+
+    <color name="teal_colorPrimary">#009688</color>
+    <color name="teal_colorPrimaryDark">#00796B</color>
+    <color name="teal_alpha_colorPrimaryDark">#8000796B</color>
+
+    <color name="blue_grey_colorPrimary">#607D8B</color>
+    <color name="blue_grey_colorPrimaryDark">#80455A64</color>
+    <color name="blue_grey_alpha_colorPrimaryDark">#80455A64</color>
+
+    <color name="purple_colorPrimary">#673AB7</color>
+    <color name="purple_colorPrimaryDark">#512DA8</color>
+    <color name="purple_alpha_colorPrimaryDark">#80512DA8</color>
+
+</resources>
