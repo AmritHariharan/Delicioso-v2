@@ -58,17 +58,23 @@ public class MainActivity extends AppCompatActivity
 
         mRecyclerView = (RecyclerView) findViewById(R.id.rv);
 
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        CustomRVAdapter adapter;
+
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
+                        // Testing with toasts
                         Log.d(TAGSER, "pls work");
                         Context context = view.getContext();
-                        Toast.makeText(context, "test yo", Toast.LENGTH_SHORT).show();
-                        // do whatever
+                        Toast.makeText(context, "test yo, " + position, Toast.LENGTH_SHORT).show();
+                        // Fragment switching stuff
                         FragmentManager fragmentManager = getSupportFragmentManager();
-                        Fragment fragment = new Fragment();
-                        fragment = new RecipeList();
+                        Fragment fragment;
+                        fragment = new CreateBookFragment();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.container, fragment)
                                 .commit();
@@ -76,11 +82,8 @@ public class MainActivity extends AppCompatActivity
                 })
         );
 
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
         initialiseData();
-        final CustomRVAdapter adapter = new CustomRVAdapter(recipeBooks);
+        adapter = new CustomRVAdapter(recipeBooks);
         mRecyclerView.setAdapter(adapter);
 
     }
