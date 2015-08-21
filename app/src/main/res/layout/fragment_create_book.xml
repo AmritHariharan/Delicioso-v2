@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
+    android:layout_width="330dp"
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:clickable="true"
-    >
+    android:gravity="center|center_horizontal">
     <ImageView
         android:src="@drawable/drawer_image"
         android:layout_width="match_parent"
@@ -32,8 +32,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/new_description"
-        android:hint="Location"
+        android:id="@+id/new_book_description"
+        android:hint="Description"
         android:layout_marginTop="4dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"

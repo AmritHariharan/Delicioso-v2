@@ -1,6 +1,7 @@
 package com.spacewheel.deliciosov20;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
@@ -29,6 +30,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    String temp_book_name, temp_book_description; // To use with DialogFragment to add stuff to the SQLite DB (unless can to in that class)
+
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
-    String TAGSER = "Test TAG";
+    String TAGX = "Test TAG";
     private CharSequence mTitle;
     private RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
@@ -68,16 +71,18 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onItemClick(View view, int position) {
                         // Testing with toasts
-                        Log.d(TAGSER, "pls work");
+                        Log.d(TAGX, "pls work");
                         Context context = view.getContext();
                         Toast.makeText(context, "test yo, " + position, Toast.LENGTH_SHORT).show();
+
+
                         // Fragment switching stuff
-                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        /*FragmentManager fragmentManager = getSupportFragmentManager();
                         Fragment fragment;
                         fragment = new CreateBookFragment();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.container, fragment)
-                                .commit();
+                                .commit();*/
                     }
                 })
         );
@@ -143,6 +148,15 @@ public class MainActivity extends AppCompatActivity
                 mTitle = getString(R.string.title_section3);
                 break;
         }
+    }
+
+
+    public void createBookButtonClick(View view) {
+
+        RecipeListFragment recipeListFragment = new RecipeListFragment();
+        final DialogFragment dialogFragment = new DialogFragment();
+        recipeListFragment.show(getSupportFragmentManager(), "DialogBOX");
+
     }
 
 
