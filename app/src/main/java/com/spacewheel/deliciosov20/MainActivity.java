@@ -93,6 +93,14 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void createBookButtonClick(View view) { // Adding a new entry to the database
+
+        CreateBookFragment createBookFragment = new CreateBookFragment();
+        final DialogFragment dialogFragment = new DialogFragment();
+        createBookFragment.show(getSupportFragmentManager(), "DialogBOX");
+
+    }
+
     private List<RecipeBook> recipeBooks;
     private void initialiseData() {
         recipeBooks = new ArrayList<>();
@@ -150,13 +158,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void onUserSelectValue(String name, String description) { //
 
-    public void createBookButtonClick(View view) {
-
-        RecipeListFragment recipeListFragment = new RecipeListFragment();
-        final DialogFragment dialogFragment = new DialogFragment();
-        recipeListFragment.show(getSupportFragmentManager(), "DialogBOX");
-
+        // TODO add your implementation.
     }
 
 
