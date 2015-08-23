@@ -1,13 +1,20 @@
 package com.spacewheel.deliciosov20;
 
+import java.util.Comparator;
+
 /**
  * Created by Amrit on 17/08/2015.
  */
-public class RecipeBook {
+public class RecipeBook implements Comparator<RecipeBook> {
     String _bookTitle;
     String _bookDescription;
     int _id;
     int _bookPhotoId;
+
+    @Override
+    public int compare(RecipeBook lhs, RecipeBook rhs) {
+        return lhs.get_bookTitle().compareTo(rhs.get_bookTitle());
+    }
 
     public RecipeBook(String _bookTitle, String _bookDescription, int _bookPhotoId) {
         this._bookTitle = _bookTitle;

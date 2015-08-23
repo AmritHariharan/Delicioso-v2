@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity
     private CharSequence mTitle;
     private RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
-    CustomRVAdapter adapter;
+    CustomRVAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +90,8 @@ public class MainActivity extends AppCompatActivity
         );
 
         initialiseData();
-        adapter = new CustomRVAdapter(recipeBooks);
-        mRecyclerView.setAdapter(adapter);
+        mAdapter = new CustomRVAdapter(recipeBooks);
+        mRecyclerView.setAdapter(mAdapter);
 
     }
 
@@ -105,9 +106,11 @@ public class MainActivity extends AppCompatActivity
     public void onUserSelectValue(String name, String description) { // Called from CreateBookFragment
 
         // TODO add your implementation.
+        // http://stackoverflow.com/questions/27845069/add-a-new-item-to-recyclerview-programatically
 
         recipeBooks.add(new RecipeBook(name, description, R.mipmap.book_icon));
-        adapter.notifyDataSetChanged();
+        Collections.sort(recipeBooks, new RecipeBookComparator());
+        mAdapter.notifyDataSetChanged();
     }
 
     private List<RecipeBook> recipeBooks;
@@ -122,6 +125,7 @@ public class MainActivity extends AppCompatActivity
         recipeBooks.add(new RecipeBook("Chewing Gum", "jk its made in a factory", R.mipmap.book_icon));
         recipeBooks.add(new RecipeBook("Indian Food", "Yay tasty home food", R.mipmap.book_icon));
         recipeBooks.add(new RecipeBook("'Murican Food", "Hamburgers, hotdogs and freedom", R.mipmap.book_icon));
+        Collections.sort(recipeBooks, new RecipeBookComparator());
     }
 
     @Override
