@@ -24,6 +24,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity
     private CharSequence mTitle;
     private RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
+    CustomRVAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +66,6 @@ public class MainActivity extends AppCompatActivity
 
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-
-        CustomRVAdapter adapter;
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
@@ -93,12 +94,20 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void createBookButtonClick(View view) { // Adding a new entry to the database
+    public void createBookButtonClick(View view) { // Creating window to add stuff to DB
 
         CreateBookFragment createBookFragment = new CreateBookFragment();
         final DialogFragment dialogFragment = new DialogFragment();
         createBookFragment.show(getSupportFragmentManager(), "DialogBOX");
 
+    }
+
+    public void onUserSelectValue(String name, String description) { // Called from CreateBookFragment
+
+        // TODO add your implementation.
+
+        recipeBooks.add(new RecipeBook(name, description, R.mipmap.book_icon));
+        adapter.notifyDataSetChanged();
     }
 
     private List<RecipeBook> recipeBooks;
@@ -156,11 +165,6 @@ public class MainActivity extends AppCompatActivity
                 mTitle = getString(R.string.title_section3);
                 break;
         }
-    }
-
-    public void onUserSelectValue(String name, String description) { //
-
-        // TODO add your implementation.
     }
 
 
