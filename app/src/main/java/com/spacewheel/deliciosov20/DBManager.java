@@ -63,7 +63,25 @@ public class DBManager extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_BOOKS + " WHERE " + COLUMN_BOOK_NAME + " =\" " + bookName + "\";");
     }
 
+    public String DBToString() {
+        String dbString = "";
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_BOOKS + " WHERE 1";
 
+        // Cursor going to point to a location in the results
+        Cursor c = db.rawQuery(query, null);
+        // Move it to the first row of your results
+        c.moveToFirst();
+
+        while (!c.isAfterLast()) {
+            if (c.getString(c.getColumnIndex(COLUMN_BOOK_NAME)) != null) {
+                dbString += c.getString(c.getColumnIndex(COLUMN_BOOK_NAME));
+                dbString += "\n";
+            }
+        }
+        db.close();
+        return dbString;
+    }
 
 
 }

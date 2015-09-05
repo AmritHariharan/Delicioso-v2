@@ -2,6 +2,7 @@ package com.spacewheel.deliciosov20;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
@@ -29,6 +30,8 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
@@ -93,12 +96,19 @@ public class MainActivity extends AppCompatActivity
         mAdapter = new CustomRVAdapter(recipeBooks);
         mRecyclerView.setAdapter(mAdapter);
 
+        // Setting animators for the RecyclerView
+        mRecyclerView.setItemAnimator(new SlideInLeftAnimator());
+        //mRecyclerView.getItemAnimator().setAddDuration(1000);
+        //mRecyclerView.getItemAnimator().setRemoveDuration(1000);
+        //mRecyclerView.getItemAnimator().setMoveDuration(1000);
+        //mRecyclerView.getItemAnimator().setChangeDuration(1000);
+
     }
 
     public void createBookButtonClick(View view) { // Creating window to add stuff to DB
 
         CreateBookFragment createBookFragment = new CreateBookFragment();
-        final DialogFragment dialogFragment = new DialogFragment();
+        //final DialogFragment dialogFragment = new DialogFragment();
         createBookFragment.show(getSupportFragmentManager(), "DialogBOX");
 
     }
@@ -108,7 +118,7 @@ public class MainActivity extends AppCompatActivity
         // TODO add your implementation.
         // http://stackoverflow.com/questions/27845069/add-a-new-item-to-recyclerview-programatically
 
-        recipeBooks.add(new RecipeBook(name, description, R.mipmap.book_icon));
+        recipeBooks.add(new RecipeBook(name, description, R.mipmap.book_icon)); // change this to add to db
         Collections.sort(recipeBooks, new RecipeBookComparator());
         mAdapter.notifyDataSetChanged();
     }
@@ -117,6 +127,9 @@ public class MainActivity extends AppCompatActivity
     private void initialiseData() {
         recipeBooks = new ArrayList<>();
         // Do all SQLite stuff here
+
+
+        // Hardcoded entry for testing
         recipeBooks.add(new RecipeBook("Quick Eats", "Easy to make dishes", R.mipmap.book_icon));
         recipeBooks.add(new RecipeBook("Tasty Food", "^Self explanatory...", R.mipmap.book_icon));
         recipeBooks.add(new RecipeBook("Italian Food", "Pizza and pasta and stuff", R.mipmap.book_icon));
@@ -125,6 +138,8 @@ public class MainActivity extends AppCompatActivity
         recipeBooks.add(new RecipeBook("Chewing Gum", "jk its made in a factory", R.mipmap.book_icon));
         recipeBooks.add(new RecipeBook("Indian Food", "Yay tasty home food", R.mipmap.book_icon));
         recipeBooks.add(new RecipeBook("'Murican Food", "Hamburgers, hotdogs and freedom", R.mipmap.book_icon));
+
+        // Sorting the Lists
         Collections.sort(recipeBooks, new RecipeBookComparator());
     }
 

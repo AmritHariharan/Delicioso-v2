@@ -38,8 +38,7 @@ public class CreateBookFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
         // Inflate and set the layout for the dialog
-
-        final View view = inflater.inflate(R.layout.fragment_create_book, null, false);
+        final View view = inflater.inflate(R.layout.fragment_create_book, null);
 
                 // Pass null as the parent view because its going in the dialog layout
 
