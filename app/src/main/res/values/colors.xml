@@ -19,6 +19,10 @@
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
 
+    <color name="status_bar">#4A90E2</color>
+    <color name="blue_text">#00B9E6</color>
+    <color name="fab_yellow">#FAFF00</color>
+
 
     // nliveo's colours from github page
 

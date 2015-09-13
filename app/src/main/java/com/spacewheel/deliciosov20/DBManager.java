@@ -6,9 +6,13 @@ import android.database.Cursor;
 import android.content.Context;
 import android.content.ContentValues;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Amrit on 22/8/15.
  */
+
 public class DBManager extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
@@ -18,9 +22,9 @@ public class DBManager extends SQLiteOpenHelper {
 
     // For TABLE_BOOKS
     public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_BOOK_NAME = "bookname";
-    public static final String COLUMN_BOOK_DESCRIPTION = "bookdescription";
-    public static final String COLUMN_IMAGE_ID = "imageid";
+    public static final String COLUMN_BOOK_NAME = "_awd";
+    public static final String COLUMN_BOOK_DESCRIPTION = "RECIPEBOOKDESCRIPTION";
+    public static final String COLUMN_IMAGE_ID = "IMAGEID";
 
     public DBManager(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -35,6 +39,15 @@ public class DBManager extends SQLiteOpenHelper {
                 COLUMN_IMAGE_ID + " INTEGER " +
                 ");";
         db.execSQL(query);
+
+        addBook(new RecipeBook("Quick Eats", "Easy to make dishes", R.mipmap.book_icon));
+        addBook(new RecipeBook("Tasty Food", "^Self explanatory...", R.mipmap.book_icon));
+        addBook(new RecipeBook("Italian Food", "Pizza and pasta and stuff", R.mipmap.book_icon));
+        addBook(new RecipeBook("Drinks", "Liquidy things", R.mipmap.book_icon));
+        addBook(new RecipeBook("Desserts", "ICE CREAM.", R.mipmap.book_icon));
+        addBook(new RecipeBook("Chewing Gum", "jk its made in a factory", R.mipmap.book_icon));
+        addBook(new RecipeBook("Indian Food", "Yay tasty home food", R.mipmap.book_icon));
+        addBook(new RecipeBook("'Murican Food", "Hamburgers, hotdogs and freedom", R.mipmap.book_icon));
 
     }
 
@@ -81,6 +94,32 @@ public class DBManager extends SQLiteOpenHelper {
         }
         db.close();
         return dbString;
+    }
+
+    List<RecipeBook> recipeBooks;
+    public List<RecipeBook> getRecipeBooks() {
+
+        recipeBooks = new ArrayList<>();
+
+        SQLiteDatabase db = getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_BOOKS + " WHERE 1";
+
+        // Cursor going to point to a location in the results
+        Cursor c = db.rawQuery(query, null);
+        // Move it to the first row of your results
+        c.moveToFirst();
+
+        while (!c.isAfterLast()) {
+            if (c.getString(c.getColumnIndex(COLUMN_BOOK_NAME)) != null) {
+                recipeBooks.add(new RecipeBook(
+                        c.getString(c.getColumnIndex(COLUMN_BOOK_NAME)),
+                        c.getString(c.getColumnIndex(COLUMN_BOOK_DESCRIPTION)),
+                        R.mipmap.book_icon));
+            }
+        }
+
+        return recipeBooks;
+
     }
 
 

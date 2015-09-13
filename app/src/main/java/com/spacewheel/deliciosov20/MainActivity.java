@@ -2,6 +2,7 @@ package com.spacewheel.deliciosov20;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     String temp_book_name, temp_book_description; // To use with DialogFragment to add stuff to the SQLite DB (unless can to in that class)
+    DBManager dbManager = new DBManager(this, null, null, 1);
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -118,29 +120,35 @@ public class MainActivity extends AppCompatActivity
         // TODO add your implementation.
         // http://stackoverflow.com/questions/27845069/add-a-new-item-to-recyclerview-programatically
 
-        recipeBooks.add(new RecipeBook(name, description, R.mipmap.book_icon)); // change this to add to db
+        RecipeBook book = new RecipeBook(name, description, R.mipmap.book_icon);
+        dbManager.addBook(book); // added book to
+
+        recipeBooks.add(book); // change this to add to db
         Collections.sort(recipeBooks, new RecipeBookComparator());
         mAdapter.notifyDataSetChanged();
     }
 
     private List<RecipeBook> recipeBooks;
     private void initialiseData() {
+
         recipeBooks = new ArrayList<>();
         // Do all SQLite stuff here
-
+        DBManager dbManager = new DBManager(this, null, null, 1);
+        recipeBooks = dbManager.getRecipeBooks();
 
         // Hardcoded entry for testing
-        recipeBooks.add(new RecipeBook("Quick Eats", "Easy to make dishes", R.mipmap.book_icon));
-        recipeBooks.add(new RecipeBook("Tasty Food", "^Self explanatory...", R.mipmap.book_icon));
-        recipeBooks.add(new RecipeBook("Italian Food", "Pizza and pasta and stuff", R.mipmap.book_icon));
-        recipeBooks.add(new RecipeBook("Drinks", "Liquidy things", R.mipmap.book_icon));
-        recipeBooks.add(new RecipeBook("Desserts", "ICE CREAM.", R.mipmap.book_icon));
-        recipeBooks.add(new RecipeBook("Chewing Gum", "jk its made in a factory", R.mipmap.book_icon));
-        recipeBooks.add(new RecipeBook("Indian Food", "Yay tasty home food", R.mipmap.book_icon));
-        recipeBooks.add(new RecipeBook("'Murican Food", "Hamburgers, hotdogs and freedom", R.mipmap.book_icon));
+        recipeBooks.add(new RecipeBook("Quick Eatsawef", "Easy to make dishes", R.mipmap.book_icon));
+        recipeBooks.add(new RecipeBook("Tasty Foodawef", "^Self explanatory...", R.mipmap.book_icon));
+        recipeBooks.add(new RecipeBook("Italian Foowefd", "Pizza and pasta and stuff", R.mipmap.book_icon));
+        recipeBooks.add(new RecipeBook("Drinkwefs", "Liquidy things", R.mipmap.book_icon));
+        recipeBooks.add(new RecipeBook("Desseefesrts", "ICE CREAM.", R.mipmap.book_icon));
+        recipeBooks.add(new RecipeBook("Chewing wefawefweGum", "jk its made in a factory", R.mipmap.book_icon));
+        recipeBooks.add(new RecipeBook("Indian Fawefood", "Yay tasty home food", R.mipmap.book_icon));
+        recipeBooks.add(new RecipeBook("'Muricanawefa Food", "Hamburgers, hotdogs and freedom", R.mipmap.book_icon));
 
         // Sorting the Lists
         Collections.sort(recipeBooks, new RecipeBookComparator());
+
     }
 
     @Override
