@@ -6,20 +6,20 @@ import java.util.Comparator;
  * Created by Amrit on 17/08/2015.
  */
 public class RecipeBook implements Comparator<RecipeBook> {
-    String _bookTitle;
-    String _bookDescription;
+    String bookTitle;
+    String bookDescription;
     int _id;
-    int _bookPhotoId;
+    int bookPhotoId;
 
     @Override
     public int compare(RecipeBook lhs, RecipeBook rhs) {
         return lhs.get_bookTitle().compareTo(rhs.get_bookTitle());
     }
 
-    public RecipeBook(String _bookTitle, String _bookDescription, int _bookPhotoId) {
-        this._bookTitle = _bookTitle;
-        this._bookDescription = _bookDescription;
-        this._bookPhotoId = _bookPhotoId;
+    public RecipeBook(String bookTitle, String bookDescription, int bookPhotoId) {
+        this.bookTitle = bookTitle;
+        this.bookDescription = bookDescription;
+        this.bookPhotoId = bookPhotoId;
     }
 
     public RecipeBook() {
@@ -27,26 +27,26 @@ public class RecipeBook implements Comparator<RecipeBook> {
     }
 
     public String get_bookDescription() {
-        return _bookDescription;
+        return bookDescription;
     }
 
     public void set_bookDescription(String _bookDescription) {
-        this._bookDescription = _bookDescription;
+        this.bookDescription = _bookDescription;
     }
 
     public int get_bookPhotoId() {
-        return _bookPhotoId;
+        return bookPhotoId;
     }
 
-    public void set_bookPhotoId(int _bookPhotoId) {
-        this._bookPhotoId = _bookPhotoId;
+    public void set_bookPhotoId(int bookPhotoId) {
+        this.bookPhotoId = bookPhotoId;
     }
 
     public String get_bookTitle() {
-        return _bookTitle;
+        return bookTitle;
     }
 
-    public void set_bookTitle(String _bookTitle) {
-        this._bookTitle = _bookTitle;
+    public void set_bookTitle(String bookTitle) {
+        this.bookTitle = bookTitle;
     }
 }

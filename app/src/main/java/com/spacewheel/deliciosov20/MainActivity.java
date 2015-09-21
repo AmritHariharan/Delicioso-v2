@@ -2,6 +2,8 @@ package com.spacewheel.deliciosov20;
 
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity
     CustomRVAdapter mAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -82,14 +84,12 @@ public class MainActivity extends AppCompatActivity
                         Context context = view.getContext();
                         Toast.makeText(context, "test yo, " + position, Toast.LENGTH_SHORT).show();
 
-
-                        // Fragment switching stuff
-                        /*FragmentManager fragmentManager = getSupportFragmentManager();
+                        FragmentManager fragmentManager = getSupportFragmentManager();
                         Fragment fragment;
-                        fragment = new CreateBookFragment();
+                        fragment = new RecipeListFragment();
                         fragmentManager.beginTransaction()
                                 .replace(R.id.container, fragment)
-                                .commit();*/
+                                .commit();
                     }
                 })
         );
@@ -99,7 +99,8 @@ public class MainActivity extends AppCompatActivity
         mRecyclerView.setAdapter(mAdapter);
 
         // Setting animators for the RecyclerView
-        mRecyclerView.setItemAnimator(new SlideInLeftAnimator());
+
+        //mRecyclerView.setItemAnimator(new SlideInLeftAnimator());
         //mRecyclerView.getItemAnimator().setAddDuration(1000);
         //mRecyclerView.getItemAnimator().setRemoveDuration(1000);
         //mRecyclerView.getItemAnimator().setMoveDuration(1000);
@@ -117,7 +118,6 @@ public class MainActivity extends AppCompatActivity
 
     public void onUserSelectValue(String name, String description) { // Called from CreateBookFragment
 
-        // TODO add your implementation.
         // http://stackoverflow.com/questions/27845069/add-a-new-item-to-recyclerview-programatically
 
         RecipeBook book = new RecipeBook(name, description, R.mipmap.book_icon);
@@ -132,9 +132,10 @@ public class MainActivity extends AppCompatActivity
     private void initialiseData() {
 
         recipeBooks = new ArrayList<>();
+
         // Do all SQLite stuff here
-        DBManager dbManager = new DBManager(this, null, null, 1);
-        recipeBooks = dbManager.getRecipeBooks();
+        //DBManager dbManager = new DBManager(this, null, null, 1);
+        //recipeBooks = dbManager.getRecipeBooks();
 
         // Hardcoded entry for testing
         recipeBooks.add(new RecipeBook("Quick Eatsawef", "Easy to make dishes", R.mipmap.book_icon));
@@ -197,24 +198,6 @@ public class MainActivity extends AppCompatActivity
 
 
     // Fragments!!!
-
-    public static class RecipeList extends Fragment {
-        public RecipeList() {
-
-        }
-
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-            //RecyclerView rv = (RecyclerView) findViewById(R.id.rv);
-
-            return inflater.inflate(R.layout.activity_main, container, false);
-        }
-
-
-    }
-
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();

@@ -56,9 +56,9 @@ public class CustomRVAdapter extends RecyclerView.Adapter<CustomRVAdapter.Custom
 
     @Override
     public void onBindViewHolder(CustomViewHolder cvh, int i) {
-        cvh.bookName.setText(recipeBooks.get(i)._bookTitle);
-        cvh.bookDescription.setText(recipeBooks.get(i)._bookDescription);
-        cvh.bookPhoto.setImageResource(recipeBooks.get(i)._bookPhotoId);
+        cvh.bookName.setText(recipeBooks.get(i).bookTitle);
+        cvh.bookDescription.setText(recipeBooks.get(i).bookDescription);
+        cvh.bookPhoto.setImageResource(recipeBooks.get(i).bookPhotoId);
     }
 
     @Override

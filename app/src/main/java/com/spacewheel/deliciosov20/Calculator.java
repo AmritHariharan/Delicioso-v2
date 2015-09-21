@@ -36,7 +36,7 @@ public class Calculator extends Fragment {
         EditText numInput = (EditText) view.findViewById(R.id.input_to_convert);
         TextView numOutput = (TextView) view.findViewById(R.id.converted_value);
 
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, unitsList);
+        //ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, unitsList);
 
         return view;
     }
