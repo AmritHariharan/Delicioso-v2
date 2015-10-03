@@ -7,58 +7,62 @@ import java.util.List;
  */
 public class Recipe {
 
+    boolean hasImage;
     String recipeTitle;
     String recipeDescription;
 
-    List<String> ingredients;
-    List<String> ingredientQuantities;
+    String ingredients;
+    String method;
+    String notes;
+    int imageId;
+    String parentBook;
 
-    List<String> method;
-
-    List<String> notes;
-
-    public Recipe(List<String> ingredientQuantities, List<String> ingredients, List<String> method, List<String> notes, String recipeDescription, String recipeTitle) {
-        this.ingredientQuantities = ingredientQuantities;
+    public Recipe(String recipeTitle, String recipeDescription, String ingredients, String method, String notes, int imageId, String parentBook ) {
+        this.recipeTitle = recipeTitle;
+        this.recipeDescription = recipeDescription;
         this.ingredients = ingredients;
         this.method = method;
         this.notes = notes;
-        this.recipeDescription = recipeDescription;
+        this.imageId = imageId;
+        this.parentBook = parentBook;
+        hasImage = true;
+    }
+
+    public Recipe(String recipeTitle, String recipeDescription, String ingredients, String method, String notes, String parentBook ) {
         this.recipeTitle = recipeTitle;
+        this.recipeDescription = recipeDescription;
+        this.ingredients = ingredients;
+        this.method = method;
+        this.notes = notes;
+        this.parentBook = parentBook;
+        hasImage = false;
     }
 
     public Recipe() {
 
     }
 
-    public List<String> getIngredientQuantities() {
-        return ingredientQuantities;
-    }
-
-    public void setIngredientQuantities(List<String> ingredientQuantities) {
-        this.ingredientQuantities = ingredientQuantities;
-    }
-
-    public List<String> getIngredients() {
+    public String getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<String> ingredients) {
+    public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
     }
 
-    public List<String> getMethod() {
+    public String getMethod() {
         return method;
     }
 
-    public void setMethod(List<String> method) {
+    public void setMethod(String method) {
         this.method = method;
     }
 
-    public List<String> getNotes() {
+    public String getNotes() {
         return notes;
     }
 
-    public void setNotes(List<String> notes) {
+    public void setNotes(String notes) {
         this.notes = notes;
     }
 
@@ -76,5 +80,21 @@ public class Recipe {
 
     public void setRecipeTitle(String recipeTitle) {
         this.recipeTitle = recipeTitle;
+    }
+
+    public int getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(int imageId) {
+        this.imageId = imageId;
+    }
+
+    public String getParentBook() {
+        return parentBook;
+    }
+
+    public void setParentBook(String parentBook) {
+        this.parentBook = parentBook;
     }
 }

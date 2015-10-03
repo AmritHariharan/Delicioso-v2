@@ -39,7 +39,7 @@ public class CustomRVAdapter extends RecyclerView.Adapter<CustomRVAdapter.Custom
 
     CustomRVAdapter(List<RecipeBook> recipeBooks) {
         this.recipeBooks = recipeBooks;
-    } // This is a setter (i think)
+    } // Constructor setting local list
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {

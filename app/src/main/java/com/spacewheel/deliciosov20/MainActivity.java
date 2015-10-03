@@ -1,65 +1,48 @@
 package com.spacewheel.deliciosov20;
 
 import android.app.Activity;
-import android.app.DialogFragment;
-import android.app.FragmentTransaction;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import jp.wasabeef.recyclerview.animators.SlideInLeftAnimator;
-
 public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-    String temp_book_name, temp_book_description; // To use with DialogFragment to add stuff to the SQLite DB (unless can to in that class)
-    DBManager dbManager = new DBManager(this, null, null, 1);
+    DBManager dbManager;
 
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
     private NavigationDrawerFragment mNavigationDrawerFragment;
 
-    /**
-     * Used to store the last screen title. For use in {@link #restoreActionBar()}.
-     */
     String TAGX = "Test TAG";
     private CharSequence mTitle;
     private RecyclerView mRecyclerView;
     RecyclerView.LayoutManager mLayoutManager;
     CustomRVAdapter mAdapter;
+    private List<RecipeBook> recipeBooks;
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dbManager = new DBManager(this);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -74,6 +57,11 @@ public class MainActivity extends AppCompatActivity
 
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        initialiseData();
+
+        mAdapter = new CustomRVAdapter(recipeBooks);
+        mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
@@ -94,17 +82,6 @@ public class MainActivity extends AppCompatActivity
                 })
         );
 
-        initialiseData();
-        mAdapter = new CustomRVAdapter(recipeBooks);
-        mRecyclerView.setAdapter(mAdapter);
-
-        // Setting animators for the RecyclerView
-
-        //mRecyclerView.setItemAnimator(new SlideInLeftAnimator());
-        //mRecyclerView.getItemAnimator().setAddDuration(1000);
-        //mRecyclerView.getItemAnimator().setRemoveDuration(1000);
-        //mRecyclerView.getItemAnimator().setMoveDuration(1000);
-        //mRecyclerView.getItemAnimator().setChangeDuration(1000);
 
     }
 
@@ -121,31 +98,28 @@ public class MainActivity extends AppCompatActivity
         // http://stackoverflow.com/questions/27845069/add-a-new-item-to-recyclerview-programatically
 
         RecipeBook book = new RecipeBook(name, description, R.mipmap.book_icon);
-        dbManager.addBook(book); // added book to
-
+        dbManager.addBook(book); // added book to SQLite DB
         recipeBooks.add(book); // change this to add to db
         Collections.sort(recipeBooks, new RecipeBookComparator());
         mAdapter.notifyDataSetChanged();
     }
 
-    private List<RecipeBook> recipeBooks;
     private void initialiseData() {
 
         recipeBooks = new ArrayList<>();
-
-        // Do all SQLite stuff here
-        //DBManager dbManager = new DBManager(this, null, null, 1);
-        //recipeBooks = dbManager.getRecipeBooks();
+        Toast.makeText(this, "before getRecipeBooks()", Toast.LENGTH_SHORT).show();
+        recipeBooks = dbManager.getRecipeBooks();
+        Toast.makeText(this, "after getRecipeBooks()", Toast.LENGTH_SHORT).show();
 
         // Hardcoded entry for testing
-        recipeBooks.add(new RecipeBook("Quick Eatsawef", "Easy to make dishes", R.mipmap.book_icon));
-        recipeBooks.add(new RecipeBook("Tasty Foodawef", "^Self explanatory...", R.mipmap.book_icon));
-        recipeBooks.add(new RecipeBook("Italian Foowefd", "Pizza and pasta and stuff", R.mipmap.book_icon));
-        recipeBooks.add(new RecipeBook("Drinkwefs", "Liquidy things", R.mipmap.book_icon));
-        recipeBooks.add(new RecipeBook("Desseefesrts", "ICE CREAM.", R.mipmap.book_icon));
-        recipeBooks.add(new RecipeBook("Chewing wefawefweGum", "jk its made in a factory", R.mipmap.book_icon));
-        recipeBooks.add(new RecipeBook("Indian Fawefood", "Yay tasty home food", R.mipmap.book_icon));
-        recipeBooks.add(new RecipeBook("'Muricanawefa Food", "Hamburgers, hotdogs and freedom", R.mipmap.book_icon));
+        //recipeBooks.add(new RecipeBook("Quick Eatsawef", "Easy to make dishes", R.mipmap.book_icon));
+        //recipeBooks.add(new RecipeBook("Tasty Foodawef", "^Self explanatory...", R.mipmap.book_icon));
+        //recipeBooks.add(new RecipeBook("Italian Foowefd", "Pizza and pasta and stuff", R.mipmap.book_icon));
+        //recipeBooks.add(new RecipeBook("Drinkwefs", "Liquidy things", R.mipmap.book_icon));
+        //recipeBooks.add(new RecipeBook("Desseefesrts", "ICE CREAM.", R.mipmap.book_icon));
+        //recipeBooks.add(new RecipeBook("Chewing wefawefweGum", "jk its made in a factory", R.mipmap.book_icon));
+        //recipeBooks.add(new RecipeBook("Indian Fawefood", "Yay tasty home food", R.mipmap.book_icon));
+        //recipeBooks.add(new RecipeBook("'Muricanawefa Food", "Hamburgers, hotdogs and freedom", R.mipmap.book_icon));
 
         // Sorting the Lists
         Collections.sort(recipeBooks, new RecipeBookComparator());
@@ -195,10 +169,14 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
-
-    // Fragments!!!
-
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
