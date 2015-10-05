@@ -8,7 +8,6 @@ import java.util.Comparator;
 public class RecipeBook implements Comparator<RecipeBook> {
     String bookTitle;
     String bookDescription;
-    int _id;
     int bookPhotoId;
 
     @Override

@@ -77,20 +77,6 @@ public class DBManager extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_BOOKS);
         db.execSQL(CREATE_TABLE_RECIPES);
 
-
-        /*if (isTableBooksEmpty() == true) {
-
-            addBook(new RecipeBook("Quick Eats", "Easy to make dishes", R.mipmap.book_icon));
-            addBook(new RecipeBook("Tasty Food", "^Self explanatory...", R.mipmap.book_icon));
-            addBook(new RecipeBook("Italian Food", "Pizza and pasta and stuff", R.mipmap.book_icon));
-            addBook(new RecipeBook("Drinks", "Liquidy things", R.mipmap.book_icon));
-            addBook(new RecipeBook("Desserts", "ICE CREAM.", R.mipmap.book_icon));
-            addBook(new RecipeBook("Chewing Gum", "jk its made in a factory", R.mipmap.book_icon));
-            addBook(new RecipeBook("Indian Food", "Yay tasty home food", R.mipmap.book_icon));
-            addBook(new RecipeBook("'Murican Food", "Hamburgers, hotdogs and freedom", R.mipmap.book_icon));
-
-        }*/
-
     }
 
     public boolean isTableBooksEmpty (){
@@ -126,7 +112,7 @@ public class DBManager extends SQLiteOpenHelper {
         values.put(COLUMN_BOOK_DESCRIPTION, recipeBook.get_bookDescription());
         //values.put(COLUMN_IMAGE_ID, recipeBook.get_bookPhotoId());
 
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_BOOKS, null, values);
         db.close();
         //addBook(new RecipeBook("Quick Eats", "Easy to make dishes", R.mipmap.book_icon));
@@ -134,18 +120,18 @@ public class DBManager extends SQLiteOpenHelper {
 
     // Delete row from database
     public void deleteBook(String bookName) {
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_BOOKS + " WHERE " + COLUMN_BOOK_NAME + " =\"" + bookName + "\";"); // <-- if errors, check this
     }
 
     public void deleteRecipe(String recipeName) {
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_RECIPES + " WHERE " + COLUMN_RECIPE_NAME + " =\"" + recipeName + "\";"); // <-- if errors, check this
     }
 
     public String DBToString() {
         String dbString = "";
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_BOOKS + " WHERE 1";
 
         // Cursor going to point to a location in the results
@@ -159,7 +145,7 @@ public class DBManager extends SQLiteOpenHelper {
                 dbString += "\n";
             }
         }
-        db.close();
+        //db.close();
         return dbString;
     }
 
@@ -168,23 +154,25 @@ public class DBManager extends SQLiteOpenHelper {
 
         recipeBooks = new ArrayList<>();
 
-        SQLiteDatabase db = getReadableDatabase();
-        String query = "SELECT * FROM " + TABLE_BOOKS + " WHERE 1";
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_BOOKS;// + " WHERE 1";
 
         // Cursor going to point to a location in the results
         Cursor c = db.rawQuery(query, null);
         // Move it to the first row of your results
         c.moveToFirst();
 
-        while (!c.isAfterLast()) {
-            if (c.getString(c.getColumnIndex(COLUMN_BOOK_NAME)) != null) {
-                recipeBooks.add(new RecipeBook(
-                        c.getString(c.getColumnIndex(COLUMN_BOOK_NAME)),
-                        c.getString(c.getColumnIndex(COLUMN_BOOK_DESCRIPTION)),
-                        R.mipmap.book_icon));
-            }
+        if (c.moveToFirst()) {
+            do {
+                if (c.getString(c.getColumnIndex(COLUMN_BOOK_NAME)) != null) {
+                    recipeBooks.add(new RecipeBook(
+                            c.getString(c.getColumnIndex(COLUMN_BOOK_NAME)),
+                            c.getString(c.getColumnIndex(COLUMN_BOOK_DESCRIPTION)),
+                            R.mipmap.book_icon));
+                }
+            } while (c.moveToNext());
         }
-
+        db.close();
         return recipeBooks;
 
     }
@@ -194,7 +182,7 @@ public class DBManager extends SQLiteOpenHelper {
 
         recipes = new ArrayList<>();
 
-        SQLiteDatabase db = getReadableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT "+ COLUMN_PARENT_BOOK +" FROM " + TABLE_RECIPES + " WHERE " + COLUMN_PARENT_BOOK + "=" + bookName;
 
         // Cursor going to point to a location in the results
@@ -202,20 +190,22 @@ public class DBManager extends SQLiteOpenHelper {
         // Move it to the first row of your results
         c.moveToFirst();
 
-        while (!c.isAfterLast()) {
-            if (c.getString(c.getColumnIndex(COLUMN_BOOK_NAME)) != null) {
-                recipes.add(new Recipe(
-                        c.getString(c.getColumnIndex(COLUMN_RECIPE_NAME)),
-                        c.getString(c.getColumnIndex(COLUMN_RECIPE_DESCRIPTION)),
-                        c.getString(c.getColumnIndex(COLUMN_RECIPE_INGREDIENTS)),
-                        c.getString(c.getColumnIndex(COLUMN_RECIPE_METHOD)),
-                        c.getString(c.getColumnIndex(COLUMN_RECIPE_NOTES)),
-                        // Add image here if required
-                        c.getString(c.getColumnIndex(COLUMN_PARENT_BOOK))
-                ));
-            }
+        if (c.moveToFirst()) {
+            do {
+                if (c.getString(c.getColumnIndex(COLUMN_RECIPE_NAME)) != null) {
+                    recipes.add(new Recipe(
+                            c.getString(c.getColumnIndex(COLUMN_RECIPE_NAME)),
+                            c.getString(c.getColumnIndex(COLUMN_RECIPE_DESCRIPTION)),
+                            c.getString(c.getColumnIndex(COLUMN_RECIPE_INGREDIENTS)),
+                            c.getString(c.getColumnIndex(COLUMN_RECIPE_METHOD)),
+                            c.getString(c.getColumnIndex(COLUMN_RECIPE_NOTES)),
+                            // Add image here if required
+                            c.getString(c.getColumnIndex(COLUMN_PARENT_BOOK))
+                    ));
+                }
+            } while (c.moveToNext());
         }
-
+        db.close();
         return recipes;
     }
 
