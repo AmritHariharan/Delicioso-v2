@@ -23,11 +23,12 @@ public class DBManager extends SQLiteOpenHelper {
 
     private Context context;
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 6;
     private static final String DATABASE_NAME = "recipeBooks.db";
 
     public static final String TABLE_BOOKS = "books";
     public static final String TABLE_RECIPES = "recipes";
+    //public static final String TABLE_SHOPPING_LIST = "shoppinglist";
 
     public static final String COLUMN_ID = "_id";
 
@@ -35,7 +36,7 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String COLUMN_BOOK_NAME = "_bookname";
     public static final String COLUMN_BOOK_DESCRIPTION = "_bookdescription";
 
-    // For TABLE_RECIPEs
+    // For TABLE_RECIPES
     public static final String COLUMN_RECIPE_NAME = "_recipename";
     public static final String COLUMN_RECIPE_DESCRIPTION = "_recipedescription";
     public static final String COLUMN_RECIPE_INGREDIENTS = "_recipeingredients";
@@ -43,6 +44,9 @@ public class DBManager extends SQLiteOpenHelper {
     public static final String COLUMN_RECIPE_NOTES = "_recipenotes";
     public static final String COLUMN_IMAGE_ID = "_imageid";
     public static final String COLUMN_PARENT_BOOK = "_parentbook";
+
+    // For TABLE_SHOPPING_LIST
+    //public static final String COLUMN_TEXT
 
     // To create the tables
     String CREATE_TABLE_BOOKS = "CREATE TABLE IF NOT EXISTS " + TABLE_BOOKS + " (" +
@@ -52,6 +56,7 @@ public class DBManager extends SQLiteOpenHelper {
             ");";
 
     String CREATE_TABLE_RECIPES = "CREATE TABLE IF NOT EXISTS " + TABLE_RECIPES + " (" +
+            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_RECIPE_NAME + " TEXT, " +
             COLUMN_RECIPE_DESCRIPTION + " TEXT, " +
             COLUMN_RECIPE_INGREDIENTS + " TEXT, " +
@@ -118,15 +123,47 @@ public class DBManager extends SQLiteOpenHelper {
         //addBook(new RecipeBook("Quick Eats", "Easy to make dishes", R.mipmap.book_icon));
     }
 
+    public void addRecipe(Recipe recipe) {
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_RECIPE_NAME, recipe.getRecipeTitle());
+        values.put(COLUMN_RECIPE_DESCRIPTION, recipe.getRecipeDescription());
+        values.put(COLUMN_RECIPE_INGREDIENTS, recipe.getIngredients());
+        values.put(COLUMN_RECIPE_METHOD, recipe.getMethod());
+        values.put(COLUMN_RECIPE_NOTES, recipe.getNotes());
+        values.put(COLUMN_IMAGE_ID, recipe.getImageId());
+        values.put(COLUMN_PARENT_BOOK, recipe.getParentBook());
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.insert(TABLE_RECIPES, null, values);
+        db.close();
+    }
+
+    public void updateRecipeItems(Recipe recipe) { // Make this change the SQLite entry
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_RECIPE_NAME, recipe.getRecipeTitle());
+        values.put(COLUMN_RECIPE_DESCRIPTION, recipe.getRecipeDescription());
+        values.put(COLUMN_RECIPE_INGREDIENTS, recipe.getIngredients());
+        values.put(COLUMN_RECIPE_METHOD, recipe.getMethod());
+        values.put(COLUMN_RECIPE_NOTES, recipe.getNotes());
+        values.put(COLUMN_IMAGE_ID, recipe.getImageId());
+        values.put(COLUMN_PARENT_BOOK, recipe.getParentBook());
+
+        //SQLiteDatabase db = this.getWritableDatabase();
+        //db.insert(TABLE_RECIPES, null, values);
+        //db.close();
+    }
+
     // Delete row from database
     public void deleteBook(String bookName) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_BOOKS + " WHERE " + COLUMN_BOOK_NAME + " =\"" + bookName + "\";"); // <-- if errors, check this
+        db.execSQL("DELETE FROM " + TABLE_BOOKS + " WHERE " + COLUMN_BOOK_NAME + " =\"" + bookName + "\";");
     }
 
     public void deleteRecipe(String recipeName) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_RECIPES + " WHERE " + COLUMN_RECIPE_NAME + " =\"" + recipeName + "\";"); // <-- if errors, check this
+        db.execSQL("DELETE FROM " + TABLE_RECIPES + " WHERE " + COLUMN_RECIPE_NAME + " =\"" + recipeName + "\";");
     }
 
     public String DBToString() {

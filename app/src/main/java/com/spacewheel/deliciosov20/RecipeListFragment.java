@@ -25,7 +25,7 @@ public class RecipeListFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
@@ -37,6 +37,9 @@ public class RecipeListFragment extends Fragment {
         BookRVAdapter m2Adapter;
 
         Context context = getActivity();
+
+        DBManager dbManager = new DBManager(context);
+        String parentBook = getArguments().getString("Book Name");
 
         mTitle = getString(R.string.title_section1);
 
@@ -65,7 +68,15 @@ public class RecipeListFragment extends Fragment {
                 })
         );
 
-        List<Recipe> recipes = new ArrayList<>();
+        List<Recipe> recipes;
+
+        Recipe testRecipe1 = new Recipe("Recipe 1 in " + parentBook, "Test recipe", "No bugs, freedom", "Stir in pot for 20 mins", "Do on Android Studio", parentBook);
+        Recipe testRecipe2 = new Recipe("Recipe 2 in " + parentBook, "Test recipe", "No bugs, freedom", "Stir in pot for 20 mins", "Do on Android Studio", parentBook);
+        dbManager.addRecipe(testRecipe1);
+        dbManager.addRecipe(testRecipe2);
+
+        recipes = dbManager.getRecipes(parentBook);
+
         Recipe awd = new Recipe();
         awd.setRecipeTitle("WFWEF");
         recipes.add(awd);

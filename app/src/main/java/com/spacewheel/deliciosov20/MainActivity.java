@@ -1,7 +1,6 @@
 package com.spacewheel.deliciosov20;
 
 import android.app.Activity;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -26,6 +25,16 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    // TODO:
+    // - Add icon
+    // - Add method in DBManager to update Recipe
+    // - Add create screen for recipe on RecipeListFragment FAB Click
+    // - Find out how to make shapes, or randomise pictures for RecipeBooks
+    //  - ^Possibly do same for Recipes?
+    // - IMPLEMENT NICE LOOKING NAV DRAWER
+    // - Add calculator logic with unit converter values
+    // - Add shopping List screen
+
     DBManager dbManager = new DBManager(this);
 
     private NavigationDrawerFragment mNavigationDrawerFragment;
@@ -44,18 +53,13 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAGX, "OnCreate is about to execute the Runnable");
-        new Thread(new Runnable() {
-            public void run() {
-                initialiseData();
-                Log.d(TAGX, "after initialiseData()");
-                Log.d(TAGX, recipeBooks.toString());
-                for(int count = 0; count < recipeBooks.size(); count++) {
-                    Log.d(TAGX, "Book " + count + ": " + recipeBooks.get(count).bookTitle + "\n");
-                }
-                //Log.d(TAGX, "DB: " + dbManager.DBToString());
-                mAdapter.notifyDataSetChanged();
-            }
-        }).start();
+
+        recipeBooks = new ArrayList<>();
+        recipeBooks = dbManager.getRecipeBooks();
+        Log.d(TAGX, recipeBooks.toString());
+        for (int count = 0; count < recipeBooks.size(); count++) {
+            Log.d(TAGX, "Book " + count + ": " + recipeBooks.get(count).bookTitle + "\n");
+        }
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -79,14 +83,6 @@ public class MainActivity extends AppCompatActivity
         mAdapter = new CustomRVAdapter(recipeBooks);
         mRecyclerView.setAdapter(mAdapter);
 
-        /*new Thread(new Runnable() {
-            public void run() {
-                //System.out.println(dbManager.DBToString());
-                Log.d(TAGX, dbManager.DBToString());
-            }
-        }).start();*/
-
-
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -94,11 +90,16 @@ public class MainActivity extends AppCompatActivity
                         // Testing with toasts
                         Log.d(TAGX, "pls work");
                         Context context = view.getContext();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("Book Name", recipeBooks.get(position).get_bookTitle());
+
                         Toast.makeText(context, "test yo, " + position, Toast.LENGTH_SHORT).show();
 
                         FragmentManager fragmentManager = getSupportFragmentManager();
                         Fragment fragment;
                         fragment = new RecipeListFragment();
+                        fragment.setArguments(bundle);
                         fragmentManager.beginTransaction()
                                 .replace(R.id.container, fragment)
                                 .commit();
@@ -126,50 +127,6 @@ public class MainActivity extends AppCompatActivity
         recipeBooks.add(book); // change this to add to db
         Collections.sort(recipeBooks, new RecipeBookComparator());
         mAdapter.notifyDataSetChanged();
-    }
-
-    private void initialiseData() {
-
-        recipeBooks = new ArrayList<>();
-        Log.d(TAGX, "After ArrayList Declaration");
-        //Toast.makeText(this, "before getRecipeBooks()", Toast.LENGTH_SHORT).show();
-
-        //dbManager.addBook(new RecipeBook("Quick Eats TEST", "Easy to make dishes", R.mipmap.book_icon));
-        //Toast.makeText(this, "after getRecipeBooks()", Toast.LENGTH_SHORT).show();
-
-        Log.d(TAGX, "before if statement");
-        if (dbManager.isTableBooksEmpty() == true) {
-            Log.d(TAGX, "after if");
-            dbManager.addBook(new RecipeBook("Quick Eats", "Easy to make dishes", R.mipmap.book_icon));
-            Log.d(TAGX, "after addBook");
-            //dbManager.addBook(new RecipeBook("Tasty Food", "^Self explanatory...", R.mipmap.book_icon));
-            //dbManager.addBook(new RecipeBook("Italian Food", "Pizza and pasta and stuff", R.mipmap.book_icon));
-            //dbManager.addBook(new RecipeBook("Drinks", "Liquidy things", R.mipmap.book_icon));
-            //dbManager.addBook(new RecipeBook("Desserts", "ICE CREAM.", R.mipmap.book_icon));
-            //dbManager.addBook(new RecipeBook("Chewing Gum", "jk its made in a factory", R.mipmap.book_icon));
-            //dbManager.addBook(new RecipeBook("Indian Food", "Yay tasty home food", R.mipmap.book_icon));
-            //dbManager.addBook(new RecipeBook("'Murican Food", "Hamburgers, hotdogs and freedom", R.mipmap.book_icon));
-
-        }
-        Log.d(TAGX, "before addBook() 2");
-        dbManager.addBook(new RecipeBook("Quick Eats 2", "Easy to make dishes", R.mipmap.book_icon));
-        Log.d(TAGX, "before getRecipeBooks()");
-        recipeBooks = dbManager.getRecipeBooks();
-        Log.d(TAGX, "after getRecipeBooks()");
-
-        // Hardcoded entry for testing
-        //recipeBooks.add(new RecipeBook("Quick Eatsawef", "Easy to make dishes", R.mipmap.book_icon));
-        //recipeBooks.add(new RecipeBook("Tasty Foodawef", "^Self explanatory...", R.mipmap.book_icon));
-        //recipeBooks.add(new RecipeBook("Italian Foowefd", "Pizza and pasta and stuff", R.mipmap.book_icon));
-        //recipeBooks.add(new RecipeBook("Drinkwefs", "Liquidy things", R.mipmap.book_icon));
-        //recipeBooks.add(new RecipeBook("Desseefesrts", "ICE CREAM.", R.mipmap.book_icon));
-        //recipeBooks.add(new RecipeBook("Chewing wefawefweGum", "jk its made in a factory", R.mipmap.book_icon));
-        //recipeBooks.add(new RecipeBook("Indian Fawefood", "Yay tasty home food", R.mipmap.book_icon));
-        //recipeBooks.add(new RecipeBook("'Muricanawefa Food", "Hamburgers, hotdogs and freedom", R.mipmap.book_icon));
-
-        // Sorting the Lists
-        //Collections.sort(recipeBooks, new RecipeBookComparator());
-
     }
 
     @Override
