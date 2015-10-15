@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAGX, "OnCreate is about to execute the Runnable");
+        Log.d(TAGX, dbManager.recipeTableToString());
 
         recipeBooks = new ArrayList<>();
         recipeBooks = dbManager.getRecipeBooks();

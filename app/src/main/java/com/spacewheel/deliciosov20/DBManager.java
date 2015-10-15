@@ -23,7 +23,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     private Context context;
 
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
     private static final String DATABASE_NAME = "recipeBooks.db";
 
     public static final String TABLE_BOOKS = "books";
@@ -31,6 +31,7 @@ public class DBManager extends SQLiteOpenHelper {
     //public static final String TABLE_SHOPPING_LIST = "shoppinglist";
 
     public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_ID_2 = "_id";
 
     // For TABLE_BOOKS
     public static final String COLUMN_BOOK_NAME = "_bookname";
@@ -56,7 +57,7 @@ public class DBManager extends SQLiteOpenHelper {
             ");";
 
     String CREATE_TABLE_RECIPES = "CREATE TABLE IF NOT EXISTS " + TABLE_RECIPES + " (" +
-            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COLUMN_ID_2 + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             COLUMN_RECIPE_NAME + " TEXT, " +
             COLUMN_RECIPE_DESCRIPTION + " TEXT, " +
             COLUMN_RECIPE_INGREDIENTS + " TEXT, " +
@@ -131,7 +132,7 @@ public class DBManager extends SQLiteOpenHelper {
         values.put(COLUMN_RECIPE_INGREDIENTS, recipe.getIngredients());
         values.put(COLUMN_RECIPE_METHOD, recipe.getMethod());
         values.put(COLUMN_RECIPE_NOTES, recipe.getNotes());
-        values.put(COLUMN_IMAGE_ID, recipe.getImageId());
+        //values.put(COLUMN_IMAGE_ID, recipe.getImageId());
         values.put(COLUMN_PARENT_BOOK, recipe.getParentBook());
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -166,7 +167,7 @@ public class DBManager extends SQLiteOpenHelper {
         db.execSQL("DELETE FROM " + TABLE_RECIPES + " WHERE " + COLUMN_RECIPE_NAME + " =\"" + recipeName + "\";");
     }
 
-    public String DBToString() {
+    public String bookTableToString() {
         String dbString = "";
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "SELECT * FROM " + TABLE_BOOKS + " WHERE 1";
@@ -185,6 +186,27 @@ public class DBManager extends SQLiteOpenHelper {
         //db.close();
         return dbString;
     }
+
+    public String recipeTableToString() {
+        String dbString = "";
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_RECIPES + " WHERE 1";
+
+        // Cursor going to point to a location in the results
+        Cursor c = db.rawQuery(query, null);
+        // Move it to the first row of your results
+        c.moveToFirst();
+
+        while (!c.isAfterLast()) {
+            if (c.getString(c.getColumnIndex(COLUMN_RECIPE_NAME)) != null) {
+                dbString += c.getString(c.getColumnIndex(COLUMN_RECIPE_NAME));
+                dbString += "\n";
+            }
+        }
+        //db.close();
+        return dbString;
+    }
+
 
     List<RecipeBook> recipeBooks;
     public List<RecipeBook> getRecipeBooks() {
