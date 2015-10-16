@@ -24,9 +24,9 @@ public class Calculator extends Fragment {
 
     private final String[] unitTypes = { "Volume", "Mass/Weight", "Length", "Temperature" };
 
-    public final String[] volumeOptions = { "Milliliter", "Liter", "Deciliter", "Tsp", "Tbsp", "Fl oz", "Gill", "Cup", "Pint", "Quart", "Gallon" };
-    public final String[] massOptions = { "Gram", "Pound", "Ounce", "Milligram", "Kilogram" };
-    public final String[] lengthOptions = { "Centimeter", "Millimeter", "Meter", "Inch" };
+    private final String[] volumeOptions = { "Milliliter", "Liter", "Deciliter", "Tsp", "Tbsp", "Fl oz", "Gill", "Cup", "Pint", "Quart", "Gallon" };
+    private final String[] massOptions = { "Gram", "Pound", "Ounce", "Milligram", "Kilogram" };
+    private final String[] lengthOptions = { "Centimeter", "Millimeter", "Meter", "Inch" };
 
     // Multiply by these numbers
     // Volume
@@ -51,6 +51,35 @@ public class Calculator extends Fragment {
     private final double MM_TO_CM = 0.1;
     private final double M_TO_CM = 100;
     private final double INCH_TO_CM = 2.54;
+
+
+    public double convertUnits(String conversionType, String unitConvertFrom, String unitConvertTo, double value) {
+
+        switch (conversionType) {
+            case "Volume":
+                value = convertVolume(value, unitConvertFrom, "TO ML");
+                value = convertVolume(value, unitConvertTo, "FROM ML");
+                break;
+            case "Mass/Weight":
+                value = convertVolume(value, unitConvertFrom, "TO G");
+                value = convertVolume(value, unitConvertTo, "FROM G");
+                break;
+            case "Length":
+                value = convertVolume(value, unitConvertFrom, "TO CM");
+                value = convertVolume(value, unitConvertTo, "FROM CM");
+                break;
+            case "Temperature":
+                if (unitConvertFrom.equals("Celsius")) {
+                    value = convert_c_to_f(value);
+                } else if (unitConvertFrom.equals("Fahrenheit")) {
+                    value = convert_f_to_c(value);
+                }
+                break;
+        }
+
+        return value;
+    }
+
 
     private double convertVolume (double value, String unit, String toFrom) {
         double multiplier = 1;
@@ -91,8 +120,10 @@ public class Calculator extends Fragment {
                 break;
         }
 
-        if (toFrom.equals("FROM")) {
+        if (toFrom.equals("FROM ML")) {
             multiplier = 1 / multiplier;
+        } else if (toFrom.equals("TO ML")) {
+
         }
 
         value = value * multiplier;
@@ -122,8 +153,10 @@ public class Calculator extends Fragment {
                 break;
         }
 
-        if (toFrom.equals("FROM")) {
+        if (toFrom.equals("FROM G")) {
             multiplier = 1 / multiplier;
+        } else if (toFrom.equals("TO G")) {
+
         }
 
         value = value * multiplier;
@@ -150,8 +183,10 @@ public class Calculator extends Fragment {
                 break;
         }
 
-        if (toFrom.equals("FROM")) {
+        if (toFrom.equals("FROM CM")) {
             multiplier = 1 / multiplier;
+        } else if (toFrom.equals("TO CM")) {
+
         }
 
         value = value * multiplier;
