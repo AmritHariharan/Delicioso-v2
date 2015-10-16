@@ -232,6 +232,7 @@ public class DBManager extends SQLiteOpenHelper {
             } while (c.moveToNext());
         }
         db.close();
+        c.close();
         return recipeBooks;
 
     }
@@ -243,6 +244,7 @@ public class DBManager extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
         String query = "SELECT "+ COLUMN_PARENT_BOOK +" FROM " + TABLE_RECIPES + " WHERE " + COLUMN_PARENT_BOOK + "=" + bookName;
+        //String query = "SELECT * FROM " + TABLE_BOOKS;// + " WHERE 1";
 
         // Cursor going to point to a location in the results
         Cursor c = db.rawQuery(query, null);
@@ -265,6 +267,7 @@ public class DBManager extends SQLiteOpenHelper {
             } while (c.moveToNext());
         }
         db.close();
+        c.close();
         return recipes;
     }
 
