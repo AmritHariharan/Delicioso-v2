@@ -1,6 +1,7 @@
 package com.spacewheel.deliciosov20;
 
 import android.app.Activity;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -27,12 +28,10 @@ public class MainActivity extends AppCompatActivity
 
     // TODO:
     // - Add icon
-    // - Add method in DBManager to update Recipe
     // - Add create screen for recipe on RecipeListFragment FAB Click
     // - Find out how to make shapes, or randomise pictures for RecipeBooks
     //  - ^Possibly do same for Recipes?
     // - IMPLEMENT NICE LOOKING NAV DRAWER
-    // - Add calculator logic with unit converter values
     // - Add shopping List screen
 
     DBManager dbManager = new DBManager(this);
@@ -130,6 +129,11 @@ public class MainActivity extends AppCompatActivity
         mAdapter.notifyDataSetChanged();
     }
 
+    public void addRecipeFromFragment(Recipe recipe) {
+        dbManager.addRecipe(recipe);
+    }
+
+
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
@@ -181,6 +185,7 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
+
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);

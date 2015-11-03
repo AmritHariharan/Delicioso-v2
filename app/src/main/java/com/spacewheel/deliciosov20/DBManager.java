@@ -140,20 +140,31 @@ public class DBManager extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void addImageToRecipe(int imageID, Recipe recipe) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        recipe.setImageId(imageID);
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_IMAGE_ID, imageID);
+        db.update(TABLE_RECIPES, values, COLUMN_RECIPE_NAME + "=" + recipe.getRecipeTitle(), null);
+        db.close();
+    }
+
     public void updateRecipeItems(Recipe recipe) { // Make this change the SQLite entry
 
         ContentValues values = new ContentValues();
         values.put(COLUMN_RECIPE_NAME, recipe.getRecipeTitle());
-        values.put(COLUMN_RECIPE_DESCRIPTION, recipe.getRecipeDescription());
+        //values.put(COLUMN_RECIPE_DESCRIPTION, recipe.getRecipeDescription());
         values.put(COLUMN_RECIPE_INGREDIENTS, recipe.getIngredients());
         values.put(COLUMN_RECIPE_METHOD, recipe.getMethod());
         values.put(COLUMN_RECIPE_NOTES, recipe.getNotes());
-        values.put(COLUMN_IMAGE_ID, recipe.getImageId());
-        values.put(COLUMN_PARENT_BOOK, recipe.getParentBook());
+        //values.put(COLUMN_IMAGE_ID, recipe.getImageId());
+        //values.put(COLUMN_PARENT_BOOK, recipe.getParentBook());
 
-        //SQLiteDatabase db = this.getWritableDatabase();
-        //db.insert(TABLE_RECIPES, null, values);
-        //db.close();
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.update(TABLE_RECIPES, values, COLUMN_RECIPE_NAME + "=" + recipe.getRecipeTitle(), null);
+        db.close();
     }
 
     // Delete row from database
@@ -232,7 +243,7 @@ public class DBManager extends SQLiteOpenHelper {
             } while (c.moveToNext());
         }
         db.close();
-        c.close();
+        //c.close();
         return recipeBooks;
 
     }
@@ -243,8 +254,8 @@ public class DBManager extends SQLiteOpenHelper {
         recipes = new ArrayList<>();
 
         SQLiteDatabase db = getWritableDatabase();
-        String query = "SELECT "+ COLUMN_PARENT_BOOK +" FROM " + TABLE_RECIPES + " WHERE " + COLUMN_PARENT_BOOK + "=" + bookName;
-        //String query = "SELECT * FROM " + TABLE_BOOKS;// + " WHERE 1";
+        //String query = "SELECT "+ COLUMN_PARENT_BOOK +" FROM " + TABLE_RECIPES + " WHERE " + COLUMN_PARENT_BOOK + "=" + bookName;
+        String query = "SELECT * FROM " + TABLE_RECIPES;// + " WHERE 1";
 
         // Cursor going to point to a location in the results
         Cursor c = db.rawQuery(query, null);
@@ -267,7 +278,7 @@ public class DBManager extends SQLiteOpenHelper {
             } while (c.moveToNext());
         }
         db.close();
-        c.close();
+        //c.close();
         return recipes;
     }
 

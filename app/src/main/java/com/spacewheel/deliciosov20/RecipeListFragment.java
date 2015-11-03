@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +37,15 @@ public class RecipeListFragment extends Fragment {
         RecyclerView m2RecyclerView;
         RecyclerView.LayoutManager m2LayoutManager;
         BookRVAdapter m2Adapter;
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.create_new_recipe);
 
         Context context = getActivity();
 
         DBManager dbManager = new DBManager(context);
         String parentBook = getArguments().getString("Book Name");
 
-        mTitle = getString(R.string.title_section1);
+        Bundle bundle = this.getArguments();
+        mTitle = bundle.getString("Book Name"); // Test if this works
 
         m2RecyclerView = (RecyclerView) rootView.findViewById(R.id.rv2);
         m2RecyclerView.setHasFixedSize(true);
