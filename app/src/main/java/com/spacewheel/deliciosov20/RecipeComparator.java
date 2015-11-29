@@ -5,10 +5,10 @@ import java.util.Comparator;
 /**
  * Created by Amrit on 16/9/15.
  */
-public class RecipeComparator implements Comparator<RecipeBook> {
+public class RecipeComparator implements Comparator<Recipe> {
 
     @Override
-    public int compare(RecipeBook lhs, RecipeBook rhs) {
-        return lhs.get_bookTitle().compareTo(rhs.get_bookTitle());
+    public int compare(Recipe lhs, Recipe rhs) {
+        return lhs.getRecipeTitle().compareTo(rhs.getRecipeTitle());
     }
 }

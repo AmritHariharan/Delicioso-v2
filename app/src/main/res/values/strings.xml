@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">Delicioso V2.0</string>
+    <string name="app_name">Delicioso!</string>
 
     <string name="title_section1">Recipe Books</string>
     <string name="title_section2">Unit Calculator</string>
-    <string name="title_section3">Im all out of ideas</string>
+    <string name="title_section3">Shopping List</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

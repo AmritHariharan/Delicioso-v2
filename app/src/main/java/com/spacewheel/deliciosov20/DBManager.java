@@ -23,7 +23,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     private Context context;
 
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 11;
     private static final String DATABASE_NAME = "recipeBooks.db";
 
     public static final String TABLE_BOOKS = "books";
@@ -63,7 +63,7 @@ public class DBManager extends SQLiteOpenHelper {
             COLUMN_RECIPE_INGREDIENTS + " TEXT, " +
             COLUMN_RECIPE_METHOD + " TEXT, " +
             COLUMN_RECIPE_NOTES + " TEXT, " +
-            COLUMN_IMAGE_ID + " INTEGER " +
+            COLUMN_IMAGE_ID + " BLOB, " +
             COLUMN_PARENT_BOOK + " TEXT" +
             ");";
 
@@ -140,14 +140,18 @@ public class DBManager extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addImageToRecipe(int imageID, Recipe recipe) {
+    public void addImageToRecipe(byte[] image, Recipe recipe) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        recipe.setImageId(imageID);
 
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_IMAGE_ID, imageID);
-        db.update(TABLE_RECIPES, values, COLUMN_RECIPE_NAME + "=" + recipe.getRecipeTitle(), null);
+        db.beginTransaction();
+        try {
+            ContentValues values = new  ContentValues();
+            values.put(COLUMN_IMAGE_ID, image);
+            db.update(TABLE_RECIPES, values, COLUMN_RECIPE_NAME + "=\"" + recipe.getRecipeTitle() + "\"", null);
+        } finally {
+            db.endTransaction();
+        }
         db.close();
     }
 
@@ -232,9 +236,9 @@ public class DBManager extends SQLiteOpenHelper {
         // Move it to the first row of your results
         c.moveToFirst();
 
-        if (c.moveToFirst()) {
+        if (c.moveToFirst()) { // Checking if the cursor has been moved to the first row
             do {
-                if (c.getString(c.getColumnIndex(COLUMN_BOOK_NAME)) != null) {
+                if (c.getString(c.getColumnIndex(COLUMN_BOOK_NAME)) != null) { // Checking if the cell is null
                     recipeBooks.add(new RecipeBook(
                             c.getString(c.getColumnIndex(COLUMN_BOOK_NAME)),
                             c.getString(c.getColumnIndex(COLUMN_BOOK_DESCRIPTION)),
@@ -243,9 +247,7 @@ public class DBManager extends SQLiteOpenHelper {
             } while (c.moveToNext());
         }
         db.close();
-        //c.close();
         return recipeBooks;
-
     }
 
     List<Recipe> recipes;
@@ -253,9 +255,9 @@ public class DBManager extends SQLiteOpenHelper {
 
         recipes = new ArrayList<>();
 
-        SQLiteDatabase db = getWritableDatabase();
-        //String query = "SELECT "+ COLUMN_PARENT_BOOK +" FROM " + TABLE_RECIPES + " WHERE " + COLUMN_PARENT_BOOK + "=" + bookName;
-        String query = "SELECT * FROM " + TABLE_RECIPES;// + " WHERE 1";
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_RECIPES + " WHERE " + COLUMN_PARENT_BOOK + "=\"" + bookName + "\";";
+        //String query = "SELECT * FROM " + TABLE_RECIPES;// + " WHERE 1";
 
         // Cursor going to point to a location in the results
         Cursor c = db.rawQuery(query, null);
@@ -271,7 +273,7 @@ public class DBManager extends SQLiteOpenHelper {
                             c.getString(c.getColumnIndex(COLUMN_RECIPE_INGREDIENTS)),
                             c.getString(c.getColumnIndex(COLUMN_RECIPE_METHOD)),
                             c.getString(c.getColumnIndex(COLUMN_RECIPE_NOTES)),
-                            // Add image here if required
+                            //c.getBlob(c.getColumnIndex(COLUMN_IMAGE_ID)),
                             c.getString(c.getColumnIndex(COLUMN_PARENT_BOOK))
                     ));
                 }

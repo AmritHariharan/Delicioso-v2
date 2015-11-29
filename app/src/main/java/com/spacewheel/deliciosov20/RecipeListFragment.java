@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class RecipeListFragment extends Fragment {
@@ -31,27 +32,35 @@ public class RecipeListFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_recipe_list, container, false);
 
+        final List<Recipe> recipes;
+
         final String TAGX = "Test TAG";
         NavigationDrawerFragment mNavigationDrawerFragment;
         CharSequence mTitle;
         RecyclerView m2RecyclerView;
         RecyclerView.LayoutManager m2LayoutManager;
-        BookRVAdapter m2Adapter;
+        final BookRVAdapter m2Adapter;
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.create_new_recipe);
-
-        Context context = getActivity();
-
-        DBManager dbManager = new DBManager(context);
-        String parentBook = getArguments().getString("Book Name");
 
         Bundle bundle = this.getArguments();
         mTitle = bundle.getString("Book Name"); // Test if this works
+        Log.d(TAGX, "RECIPE TITLE: " + mTitle);
+
+        Context context = getActivity();
+        final DBManager dbManager = new DBManager(context);
+        String parentBook = getArguments().getString("Book Name");
 
         m2RecyclerView = (RecyclerView) rootView.findViewById(R.id.rv2);
         m2RecyclerView.setHasFixedSize(true);
 
         m2LayoutManager = new LinearLayoutManager(context);
         m2RecyclerView.setLayoutManager(m2LayoutManager);
+
+        recipes = dbManager.getRecipes(parentBook);
+        m2Adapter = new BookRVAdapter(recipes);
+        m2RecyclerView.setAdapter(m2Adapter);
+
+        Collections.sort(recipes, new RecipeComparator());
 
         m2RecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
@@ -60,11 +69,25 @@ public class RecipeListFragment extends Fragment {
                         // Testing with toasts
                         Log.d(TAGX, "pls workaed");
                         Context context = view.getContext();
-                        Toast.makeText(context, "test yo00, " + position, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "test yo00, " + position, Toast.LENGTH_LONG).show();
+
+                        Log.d(TAGX, recipes.get(position).toString());
+                        Recipe currentRecipe = recipes.get(position);
+
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("recipeTitle", currentRecipe.getRecipeTitle());
+                        bundle.putString("recipeDescription", currentRecipe.getRecipeDescription());
+                        bundle.putString("ingredients", currentRecipe.getIngredients());
+                        bundle.putString("method", currentRecipe.getMethod());
+                        bundle.putString("notes", currentRecipe.getNotes());
+                        bundle.putInt("imageId", currentRecipe.getImageId());
+                        bundle.putString("parentBook", currentRecipe.getParentBook());
 
                         FragmentManager fragmentManager = getFragmentManager();
                         Fragment fragment;
                         fragment = new SingleRecipeFragment();
+                        fragment.setArguments(bundle);
                         fragmentManager.beginTransaction()
                                 .replace(R.id.container, fragment)
                                 .commit();
@@ -72,21 +95,21 @@ public class RecipeListFragment extends Fragment {
                 })
         );
 
-        List<Recipe> recipes;
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateRecipeFragment createRecipeFragment = new CreateRecipeFragment();
+                MainActivity callingActivity = (MainActivity) getActivity();
+                createRecipeFragment.show(callingActivity.getSupportFragmentManager(), "DialogBOX2");
+                //recipes.add(callingActivity.tempRecipe);
+                m2Adapter.notifyDataSetChanged();
+            }
+        });
 
-        Recipe testRecipe1 = new Recipe("Recipe 1 in " + parentBook, "Test recipe", "No bugs, freedom", "Stir in pot for 20 mins", "Do on Android Studio", parentBook);
-        Recipe testRecipe2 = new Recipe("Recipe 2 in " + parentBook, "Test recipe", "No bugs, freedom", "Stir in pot for 20 mins", "Do on Android Studio", parentBook);
-        dbManager.addRecipe(testRecipe1);
-        dbManager.addRecipe(testRecipe2);
-
-        recipes = dbManager.getRecipes(parentBook);
-
-        Recipe awd = new Recipe();
-        awd.setRecipeTitle("WFWEF");
-        recipes.add(awd);
-
-        m2Adapter = new BookRVAdapter(recipes);
-        m2RecyclerView.setAdapter(m2Adapter);
+        //Recipe testRecipe1 = new Recipe("Recipe 1 in " + parentBook, "Test recipe", "No bugs, freedom", "Stir in pot for 20 mins \n" + Math.random(), "Do on Android Studio", parentBook);
+        //Recipe testRecipe2 = new Recipe("Recipe 2 in " + parentBook, "Test recipe", "No bugs, freedom", "Stir in pot for 20 mins", "Do on Android Studio", parentBook);
+        //dbManager.addRecipe(testRecipe1);
+        //dbManager.addRecipe(testRecipe2);
 
         return rootView;
     }

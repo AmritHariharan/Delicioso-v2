@@ -61,12 +61,12 @@ public class Calculator extends Fragment {
                 value = convertVolume(value, unitConvertTo, "FROM ML");
                 break;
             case "Mass/Weight":
-                value = convertVolume(value, unitConvertFrom, "TO G");
-                value = convertVolume(value, unitConvertTo, "FROM G");
+                value = convertWeight(value, unitConvertFrom, "TO G");
+                value = convertWeight(value, unitConvertTo, "FROM G");
                 break;
             case "Length":
-                value = convertVolume(value, unitConvertFrom, "TO CM");
-                value = convertVolume(value, unitConvertTo, "FROM CM");
+                value = convertLength(value, unitConvertFrom, "TO CM");
+                value = convertLength(value, unitConvertTo, "FROM CM");
                 break;
             case "Temperature":
                 if (unitConvertFrom.equals("Celsius")) {

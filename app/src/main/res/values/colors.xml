@@ -23,6 +23,11 @@
     <color name="blue_text">#00B9E6</color>
     <color name="fab_yellow">#FAFF00</color>
 
+    <color name="cv_bg_light_blue">#B3E5FC</color>
+    <color name="cv_bg_orange">#FFCC80</color>
+    <color name="cv_bg_yellow">#FFF176</color>
+    <color name="cv_bg_green">#81C784</color>
+
 
     // nliveo's colours from github page
 

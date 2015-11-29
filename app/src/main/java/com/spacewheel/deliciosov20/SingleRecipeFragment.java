@@ -28,6 +28,10 @@ import android.widget.ImageView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
+import net.bozho.easycamera.DefaultEasyCamera;
+import net.bozho.easycamera.EasyCamera;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -46,7 +50,9 @@ public class SingleRecipeFragment extends Fragment {
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
     ImageView imageView;
-    final Context context = getActivity();
+    Bitmap photo;
+    Recipe recipe;
+    //final Context context = getActivity();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,16 +66,53 @@ public class SingleRecipeFragment extends Fragment {
         imageView = (ImageView) rootView.findViewById(R.id.imageView);
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.add_photo);
 
+        Bundle bundle = this.getArguments();
+        recipe = new Recipe(
+                bundle.getString("recipeTitle"),
+                bundle.getString("recipeDescription"),
+                bundle.getString("ingredients"),
+                bundle.getString("method"),
+                bundle.getString("notes"),
+                bundle.getInt("imageId"),
+                bundle.getString("parentBook")
+        );
+
+        ingredients.setText(recipe.getIngredients());
+        method.setText(recipe.getMethod());
+        recipeName.setText(recipe.getRecipeTitle());
+
         fab.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //Take a picture and pass the image along to onActivityResult
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // Take a picture and pass the image along to onActivityResult
                 //startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
 
-                dispatchTakePictureIntent();
-                //setPic(imageView);
+                // EASYCAM IMPLEMENTATION
 
+                EasyCamera camera = DefaultEasyCamera.open();
+                EasyCamera.CameraActions actions = camera.startPreview(surface);
+                EasyCamera.PictureCallback callback = new EasyCamera.PictureCallback() {
+                    public void onPictureTaken(byte[] data, EasyCamera.CameraActions actions) {
+                        // store picture
+                        // This works, but it takes forever...
+                        //photo = BitmapFactory.decodeResource(getResources(), R.drawable.drawer_image);
+                        //ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        //photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                        //byte[] byteArray = stream.toByteArray();
+                        ((MainActivity)getActivity()).dbManager.addImageToRecipe(data, recipe);
+                    }
+                };
+                actions.takePicture(EasyCamera.Callbacks.create().withJpegCallback(callback));
+
+
+                // SQUARECAM IMPLEMENTATION
+
+
+
+
+                //dispatchTakePictureIntent();
+                //setPic(imageView);3
                 return false;
             }
         });
@@ -77,24 +120,24 @@ public class SingleRecipeFragment extends Fragment {
         return rootView;
     }
 
-    @Override
+    /*@Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             // Get the photo
             Bundle extras = data.getExtras();
-            Bitmap photo = (Bitmap) extras.get("data");
+            photo = (Bitmap) extras.get("data");
             imageView.setImageBitmap(photo);
 
         }
 
-    }
+    }*/
 
     /*private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(context.getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
-    }*/
+    }
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -118,6 +161,9 @@ public class SingleRecipeFragment extends Fragment {
 
     String mCurrentPhotoPath;
 
+
+
+
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()); // Check date import, might be sql not util
@@ -125,9 +171,9 @@ public class SingleRecipeFragment extends Fragment {
         File storageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
+                imageFileName,  // prefix
+                ".jpg",         // suffix
+                storageDir      // directory
         );
 
         // Save a file: path for use with ACTION_VIEW intents
@@ -159,12 +205,10 @@ public class SingleRecipeFragment extends Fragment {
         mImageView.setImageBitmap(bitmap);
     }
 
-
-
-
     private boolean hasCamera() {
         return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY);
     }
 
+    */
 
 }

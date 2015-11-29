@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "23.0.1"
+    buildToolsVersion '23.0.2'
 
     defaultConfig {
         applicationId "com.spacewheel.deliciosov20"
@@ -26,5 +26,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.2.1'
     compile 'com.getbase:floatingactionbutton:1.10.0'
     //compile 'net.steamcrafted:materialiconlib:1.0.3'
-    compile 'jp.wasabeef:recyclerview-animators:1.2.2'
+    //compile 'jp.wasabeef:recyclerview-animators:1.2.2'
+    compile 'net.bozho.easycamera:easycamera:0.0.1:aar@aar' // Easy camera implementation
+    //compile 'com.github.boxme:squarecamera:1.1.0' // Square camera, yt vid shows it working well (copy code)
+    compile 'com.github.paolorotolo:appintro:3.2.0' // App intro
 }

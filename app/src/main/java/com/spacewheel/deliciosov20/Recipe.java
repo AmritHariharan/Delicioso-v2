@@ -7,15 +7,15 @@ import java.util.List;
  */
 public class Recipe {
 
-    boolean hasImage;
-    String recipeTitle;
-    String recipeDescription;
+    boolean hasImage = false;
+    String recipeTitle = null;
+    String recipeDescription = null;
 
-    String ingredients;
-    String method;
-    String notes;
+    String ingredients = null;
+    String method = null;
+    String notes = null;
     int imageId;
-    String parentBook;
+    String parentBook = null;
 
     public Recipe(String recipeTitle, String recipeDescription, String ingredients, String method, String notes, int imageId, String parentBook ) {
         this.recipeTitle = recipeTitle;

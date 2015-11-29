@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     // TODO:
-    // - Add icon
     // - Add create screen for recipe on RecipeListFragment FAB Click
     // - Find out how to make shapes, or randomise pictures for RecipeBooks
     //  - ^Possibly do same for Recipes?
@@ -44,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     RecyclerView.LayoutManager mLayoutManager;
     CustomRVAdapter mAdapter;
     private List<RecipeBook> recipeBooks;
+    private List<List<Recipe>> recipes;
 
 
     @Override
@@ -51,8 +51,6 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAGX, "OnCreate has begun");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(TAGX, "OnCreate is about to execute the Runnable");
-        Log.d(TAGX, dbManager.recipeTableToString());
 
         recipeBooks = new ArrayList<>();
         recipeBooks = dbManager.getRecipeBooks();
@@ -129,10 +127,14 @@ public class MainActivity extends AppCompatActivity
         mAdapter.notifyDataSetChanged();
     }
 
+    public Recipe tempRecipe;
     public void addRecipeFromFragment(Recipe recipe) {
         dbManager.addRecipe(recipe);
+        tempRecipe = recipe;
+
     }
 
+    // deliciosorecipes@gmail.com || TastyFood
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {

@@ -1,6 +1,7 @@
 package com.spacewheel.deliciosov20;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ public class BookRVAdapter extends RecyclerView.Adapter<BookRVAdapter.CustomView
         TextView recipeName;
         TextView recipeDescription;
         Context context;
+        ImageView imageView;
 
         CustomViewHolderBook (View v) {
             super(v);
@@ -54,8 +56,13 @@ public class BookRVAdapter extends RecyclerView.Adapter<BookRVAdapter.CustomView
 
     @Override
     public void onBindViewHolder(CustomViewHolderBook cvh, int i) {
-        cvh.recipeName.setText(recipes.get(i).recipeTitle);
-        cvh.recipeDescription.setText(recipes.get(i).recipeDescription);
+        try {
+            cvh.recipeName.setText(recipes.get(i).recipeTitle);
+            cvh.recipeDescription.setText(recipes.get(i).recipeDescription);
+        } catch (Exception e) {
+
+        }
+        //cvh.imageView.setImageBitmap();
     }
 
     @Override
