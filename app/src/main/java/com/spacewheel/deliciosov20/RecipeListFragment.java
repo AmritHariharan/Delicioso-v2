@@ -81,7 +81,7 @@ public class RecipeListFragment extends Fragment {
                         bundle.putString("ingredients", currentRecipe.getIngredients());
                         bundle.putString("method", currentRecipe.getMethod());
                         bundle.putString("notes", currentRecipe.getNotes());
-                        bundle.putInt("imageId", currentRecipe.getImageId());
+                        bundle.putByteArray("imageId", currentRecipe.getImageId());
                         bundle.putString("parentBook", currentRecipe.getParentBook());
 
                         FragmentManager fragmentManager = getFragmentManager();
@@ -102,12 +102,13 @@ public class RecipeListFragment extends Fragment {
                 MainActivity callingActivity = (MainActivity) getActivity();
                 createRecipeFragment.show(callingActivity.getSupportFragmentManager(), "DialogBOX2");
                 //recipes.add(callingActivity.tempRecipe);
+                //dbManager.addRecipe(callingActivity.tempRecipe);
                 m2Adapter.notifyDataSetChanged();
             }
         });
 
         //Recipe testRecipe1 = new Recipe("Recipe 1 in " + parentBook, "Test recipe", "No bugs, freedom", "Stir in pot for 20 mins \n" + Math.random(), "Do on Android Studio", parentBook);
-        //Recipe testRecipe2 = new Recipe("Recipe 2 in " + parentBook, "Test recipe", "No bugs, freedom", "Stir in pot for 20 mins", "Do on Android Studio", parentBook);
+        //Recipe testRecipe2 = new Recipe("Recipe 2 in " + parentBook, "Test recipe", "No bugs, freedom", "Stir in pot for 20 mins \n" + Math.random(), "Do on Android Studio", parentBook);
         //dbManager.addRecipe(testRecipe1);
         //dbManager.addRecipe(testRecipe2);
 

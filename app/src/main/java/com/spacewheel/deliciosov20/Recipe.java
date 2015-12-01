@@ -14,10 +14,10 @@ public class Recipe {
     String ingredients = null;
     String method = null;
     String notes = null;
-    int imageId;
+    byte[] imageId;
     String parentBook = null;
 
-    public Recipe(String recipeTitle, String recipeDescription, String ingredients, String method, String notes, int imageId, String parentBook ) {
+    public Recipe(String recipeTitle, String recipeDescription, String ingredients, String method, String notes, byte[] imageId, String parentBook ) {
         this.recipeTitle = recipeTitle;
         this.recipeDescription = recipeDescription;
         this.ingredients = ingredients;
@@ -36,6 +36,10 @@ public class Recipe {
         this.notes = notes;
         this.parentBook = parentBook;
         hasImage = false;
+    }
+
+    public void addImage(byte[] image) {
+        imageId = image;
     }
 
     public Recipe() {
@@ -82,11 +86,11 @@ public class Recipe {
         this.recipeTitle = recipeTitle;
     }
 
-    public int getImageId() {
+    public byte[] getImageId() {
         return imageId;
     }
 
-    public void setImageId(int imageId) {
+    public void setImageId(byte[] imageId) {
         this.imageId = imageId;
     }
 

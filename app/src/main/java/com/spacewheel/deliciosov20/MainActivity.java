@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity
     RecyclerView.LayoutManager mLayoutManager;
     CustomRVAdapter mAdapter;
     private List<RecipeBook> recipeBooks;
-    private List<List<Recipe>> recipes;
 
 
     @Override
@@ -76,6 +75,11 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAGX, "before print list");
         for(int count = 0; count < recipeBooks.size(); count++) {
             Log.d(TAGX, recipeBooks.get(count) + "\n");
+        }
+
+        RecipeBookComparator comp = new RecipeBookComparator();
+        if (recipeBooks != null) {
+            Collections.sort(recipeBooks, comp);
         }
 
         mAdapter = new CustomRVAdapter(recipeBooks);

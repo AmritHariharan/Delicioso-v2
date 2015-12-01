@@ -23,7 +23,7 @@ public class DBManager extends SQLiteOpenHelper {
 
     private Context context;
 
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
     private static final String DATABASE_NAME = "recipeBooks.db";
 
     public static final String TABLE_BOOKS = "books";
@@ -132,13 +132,30 @@ public class DBManager extends SQLiteOpenHelper {
         values.put(COLUMN_RECIPE_INGREDIENTS, recipe.getIngredients());
         values.put(COLUMN_RECIPE_METHOD, recipe.getMethod());
         values.put(COLUMN_RECIPE_NOTES, recipe.getNotes());
-        //values.put(COLUMN_IMAGE_ID, recipe.getImageId());
+        if (COLUMN_IMAGE_ID != null) {
+            values.put(COLUMN_IMAGE_ID, recipe.getImageId());
+        }
         values.put(COLUMN_PARENT_BOOK, recipe.getParentBook());
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.insert(TABLE_RECIPES, null, values);
         db.close();
     }
+
+    /*public void addImageToRecipe(byte[] image, Recipe recipe) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.beginTransaction();
+        try {
+            ContentValues values = new  ContentValues();
+            values.put(COLUMN_IMAGE_ID, image);
+            db.update(TABLE_RECIPES, values, COLUMN_RECIPE_NAME + "=\"" + recipe.getRecipeTitle() + "\"", null);
+        } finally {
+            db.endTransaction();
+        }
+        db.close();
+    }*/
 
     public void addImageToRecipe(byte[] image, Recipe recipe) {
 
@@ -149,6 +166,9 @@ public class DBManager extends SQLiteOpenHelper {
             ContentValues values = new  ContentValues();
             values.put(COLUMN_IMAGE_ID, image);
             db.update(TABLE_RECIPES, values, COLUMN_RECIPE_NAME + "=\"" + recipe.getRecipeTitle() + "\"", null);
+
+            db.setTransactionSuccessful();   // This line commits the current transaction
+
         } finally {
             db.endTransaction();
         }
@@ -267,15 +287,28 @@ public class DBManager extends SQLiteOpenHelper {
         if (c.moveToFirst()) {
             do {
                 if (c.getString(c.getColumnIndex(COLUMN_RECIPE_NAME)) != null) {
-                    recipes.add(new Recipe(
-                            c.getString(c.getColumnIndex(COLUMN_RECIPE_NAME)),
-                            c.getString(c.getColumnIndex(COLUMN_RECIPE_DESCRIPTION)),
-                            c.getString(c.getColumnIndex(COLUMN_RECIPE_INGREDIENTS)),
-                            c.getString(c.getColumnIndex(COLUMN_RECIPE_METHOD)),
-                            c.getString(c.getColumnIndex(COLUMN_RECIPE_NOTES)),
-                            //c.getBlob(c.getColumnIndex(COLUMN_IMAGE_ID)),
-                            c.getString(c.getColumnIndex(COLUMN_PARENT_BOOK))
-                    ));
+                    if (c.getBlob(c.getColumnIndex(COLUMN_IMAGE_ID)) != null) {
+                        Log.d("TAGGER", "STAGE 1");
+                        recipes.add(new Recipe( // With image
+                                c.getString(c.getColumnIndex(COLUMN_RECIPE_NAME)),
+                                c.getString(c.getColumnIndex(COLUMN_RECIPE_DESCRIPTION)),
+                                c.getString(c.getColumnIndex(COLUMN_RECIPE_INGREDIENTS)),
+                                c.getString(c.getColumnIndex(COLUMN_RECIPE_METHOD)),
+                                c.getString(c.getColumnIndex(COLUMN_RECIPE_NOTES)),
+                                c.getBlob(c.getColumnIndex(COLUMN_IMAGE_ID)),
+                                c.getString(c.getColumnIndex(COLUMN_PARENT_BOOK))
+                        ));
+                    } else {
+                        Log.d("TAGGER", "STAGE 2");
+                        recipes.add(new Recipe( // Without image
+                                c.getString(c.getColumnIndex(COLUMN_RECIPE_NAME)),
+                                c.getString(c.getColumnIndex(COLUMN_RECIPE_DESCRIPTION)),
+                                c.getString(c.getColumnIndex(COLUMN_RECIPE_INGREDIENTS)),
+                                c.getString(c.getColumnIndex(COLUMN_RECIPE_METHOD)),
+                                c.getString(c.getColumnIndex(COLUMN_RECIPE_NOTES)),
+                                c.getString(c.getColumnIndex(COLUMN_PARENT_BOOK))
+                        ));
+                    }
                 }
             } while (c.moveToNext());
         }
