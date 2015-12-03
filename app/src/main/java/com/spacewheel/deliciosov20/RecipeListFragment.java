@@ -34,8 +34,9 @@ public class RecipeListFragment extends Fragment {
 
         final List<Recipe> recipes;
 
+        final MainActivity callingActivity = (MainActivity) getActivity();
+
         final String TAGX = "Test TAG";
-        NavigationDrawerFragment mNavigationDrawerFragment;
         CharSequence mTitle;
         RecyclerView m2RecyclerView;
         RecyclerView.LayoutManager m2LayoutManager;
@@ -48,21 +49,23 @@ public class RecipeListFragment extends Fragment {
 
         Context context = getActivity();
         final DBManager dbManager = new DBManager(context);
-        String parentBook = getArguments().getString("Book Name");
+        final String parentBook = getArguments().getString("Book Name");
 
-        m2RecyclerView = (RecyclerView) rootView.findViewById(R.id.rv2);
-        m2RecyclerView.setHasFixedSize(true);
+        // RecyclerView 2 stuff
 
-        m2LayoutManager = new LinearLayoutManager(context);
-        m2RecyclerView.setLayoutManager(m2LayoutManager);
+        callingActivity.m2RecyclerView = (RecyclerView) rootView.findViewById(R.id.rv2);
+        (callingActivity.m2RecyclerView).setHasFixedSize(true);
+
+        callingActivity.m2LayoutManager = new LinearLayoutManager(context);
+        (callingActivity.m2RecyclerView).setLayoutManager(callingActivity.m2LayoutManager);
 
         recipes = dbManager.getRecipes(parentBook);
-        m2Adapter = new BookRVAdapter(recipes);
-        m2RecyclerView.setAdapter(m2Adapter);
+        callingActivity.m2Adapter = new BookRVAdapter(recipes);
+        (callingActivity.m2RecyclerView).setAdapter(callingActivity.m2Adapter);
 
         Collections.sort(recipes, new RecipeComparator());
 
-        m2RecyclerView.addOnItemTouchListener(
+        callingActivity.m2RecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
@@ -98,12 +101,23 @@ public class RecipeListFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Bundle bundle = new Bundle();
+                Log.d("DB TEST", "FAB 1");
+                bundle.putString("parentBook", parentBook);
+                Log.d("DB TEST", "FAB 2");
+
                 CreateRecipeFragment createRecipeFragment = new CreateRecipeFragment();
-                MainActivity callingActivity = (MainActivity) getActivity();
+                Log.d("DB TEST", "FAB 3");
+                createRecipeFragment.setArguments(bundle);
+                Log.d("DB TEST", "FAB 4");
+                Log.d("DB TEST", "FAB 5");
                 createRecipeFragment.show(callingActivity.getSupportFragmentManager(), "DialogBOX2");
+                Log.d("DB TEST", "FAB 6");
                 //recipes.add(callingActivity.tempRecipe);
+                //Log.d("DB TEST", "FAB 7");
                 //dbManager.addRecipe(callingActivity.tempRecipe);
-                m2Adapter.notifyDataSetChanged();
+                callingActivity.m2Adapter.notifyDataSetChanged();
             }
         });
 

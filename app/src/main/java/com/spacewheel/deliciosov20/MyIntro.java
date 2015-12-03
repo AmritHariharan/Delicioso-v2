@@ -42,12 +42,29 @@ public class MyIntro extends AppIntro {
     }
 
     @Override
-    public void onSkipPressed() {
-        // Do something when users tap on Skip button.
+    public void init(Bundle savedInstanceState) {
+
+        addSlide(AppIntroFragment.newInstance(
+                getString(R.string.intro_title),
+                getString(R.string.intro_desc),
+                R.drawable.overview_icon_updated,
+                Color.parseColor("#03A9F4")));
+
+        setFlowAnimation();
+        showDoneButton(true);
+
     }
 
     @Override
     public void onDonePressed() {
-        // Do something when users tap on Done button.
+
+        finish();
+
     }
+
+    @Override
+    public void onSkipPressed() {
+        // Do something when users tap on Skip button.
+    }
+
 }

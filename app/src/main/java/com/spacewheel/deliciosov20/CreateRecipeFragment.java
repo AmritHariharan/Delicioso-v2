@@ -31,7 +31,7 @@ public class CreateRecipeFragment extends DialogFragment {
         // Required empty public constructor
     }
 
-    EditText newName, newIngredients, newMethod, newNotes;
+    EditText newName, newIngredients, newMethod, newNotes, newDescription;
 
     @NonNull
     @Override
@@ -47,6 +47,9 @@ public class CreateRecipeFragment extends DialogFragment {
 
         // Pass null as the parent view because its going in the dialog layout
 
+        Bundle mArgs = getArguments();
+        final String parentBook = mArgs.getString("parentBook");
+
         builder.setView(view)
                 // Add action buttons
                 .setPositiveButton("Create Recipe", new DialogInterface.OnClickListener() {
@@ -54,19 +57,22 @@ public class CreateRecipeFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
 
                         newName = (EditText) view.findViewById(R.id.editTitle);
+                        newDescription = (EditText) view.findViewById(R.id.editDescription);
                         newIngredients = (EditText) view.findViewById(R.id.editIngredients);
                         newMethod = (EditText) view.findViewById(R.id.editMethod);
                         newNotes = (EditText) view.findViewById(R.id.editNotes);
 
                         String recipe_name = newName.getText().toString();
+                        String recipe_description = newDescription.getText().toString();
                         String recipe_ingredients = newIngredients.getText().toString();
                         String recipe_method = newMethod.getText().toString();
                         String recipe_notes = newNotes.getText().toString();
 
-                        Recipe recipe = new Recipe(recipe_name, "Description", recipe_ingredients, recipe_method, recipe_notes, "Parent Book");
+                        final MainActivity callingActivity = (MainActivity) getActivity();
+
+                        Recipe recipe = new Recipe(recipe_name, recipe_description, recipe_ingredients, recipe_method, recipe_notes, parentBook);
 
                         Log.d("Name:  ", recipe_name);
-                        MainActivity callingActivity = (MainActivity) getActivity();
                         callingActivity.addRecipeFromFragment(recipe);
                         dialog.dismiss();
 

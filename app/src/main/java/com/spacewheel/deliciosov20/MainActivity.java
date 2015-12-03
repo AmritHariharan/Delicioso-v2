@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity
     CustomRVAdapter mAdapter;
     private List<RecipeBook> recipeBooks;
 
+    RecyclerView m2RecyclerView;
+    RecyclerView.LayoutManager m2LayoutManager;
+    BookRVAdapter m2Adapter;
+
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -133,9 +137,13 @@ public class MainActivity extends AppCompatActivity
 
     public Recipe tempRecipe;
     public void addRecipeFromFragment(Recipe recipe) {
+        Log.d("DB TEST", "ARR 1");
         dbManager.addRecipe(recipe);
+        Log.d("DB TEST", "ARR 2");
         tempRecipe = recipe;
-
+        Log.d("DB TEST", "ARR 3");
+        m2Adapter.notifyDataSetChanged();
+        Log.d("DB TEST", "ARR 4");
     }
 
     // deliciosorecipes@gmail.com || TastyFood
