@@ -44,6 +44,8 @@ public class SingleRecipeFragment extends Fragment {
     MainActivity callingActivity;
     PackageManager packageManager;
 
+    DBManager dbManager;
+
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,7 +63,7 @@ public class SingleRecipeFragment extends Fragment {
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.add_photo);
         ImageView emailImage = (ImageView) rootView.findViewById(R.id.emailImage);
 
-        //dbManager = new DBManager(context);
+        dbManager = new DBManager(context);
 
         Bundle bundle = this.getArguments();
         recipe = new Recipe(

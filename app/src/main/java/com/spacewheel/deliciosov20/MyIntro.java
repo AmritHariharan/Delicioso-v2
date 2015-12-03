@@ -17,19 +17,25 @@ public class MyIntro extends AppIntro {
 
         // Add your slide's fragments here
         // AppIntro will automatically generate the dots indicator and buttons.
-        //addSlide(first_fragment);
-        //addSlide(second_fragment);
-        //addSlide(third_fragment);
-        //addSlide(fourth_fragment);
 
         // Instead of fragments, you can also use our default slide
         // Just set a title, description, background and image. AppIntro will do the rest
         //addSlide(AppIntroFragment.newInstance(title, description, image, background_colour));
+        addSlide(AppIntroFragment.newInstance(
+                getString(R.string.intro_title),
+                getString(R.string.intro_desc),
+                R.mipmap.delicioso_icon,
+                Color.parseColor("#2196F3")));
+
+        setFlowAnimation();
+        showDoneButton(true);
 
         // OPTIONAL METHODS
         // Override bar/separator color
-        setBarColor(Color.parseColor("#3F51B5"));
-        setSeparatorColor(Color.parseColor("#2196F3"));
+        //setBarColor(Color.parseColor("#3F51B5")); // Dark blue
+        //setSeparatorColor(Color.parseColor("#2196F3")); // Blue
+
+
 
         // Hide Skip/Done button
         showSkipButton(false);
@@ -39,20 +45,6 @@ public class MyIntro extends AppIntro {
         // NOTE: you will probably need to ask VIBRATE permesssion in Manifest
         setVibrate(true);
         setVibrateIntensity(30);
-    }
-
-    @Override
-    public void init(Bundle savedInstanceState) {
-
-        addSlide(AppIntroFragment.newInstance(
-                getString(R.string.intro_title),
-                getString(R.string.intro_desc),
-                R.drawable.overview_icon_updated,
-                Color.parseColor("#03A9F4")));
-
-        setFlowAnimation();
-        showDoneButton(true);
-
     }
 
     @Override
